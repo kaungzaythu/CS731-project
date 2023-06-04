@@ -1,13 +1,14 @@
 const asyncHandler = require('express-async-handler')
 
 const MediaContent = require('../models/mediaContentModel')
+const MediaContentImage = require('../models/mediaContentImageModel')
 const User = require('../models/userModel')
 
 //@desc     Get Media Content
 //@route    GET /api/mediaContents
 //@access   Private
 const getMediaContents = asyncHandler(async (req, res) => {
-    const mediaContents = await MediaContent.find({ user: req.user.id})
+    const mediaContents = await MediaContent.find()
     res.status(200).json(mediaContents)
 })
 
@@ -20,10 +21,27 @@ const createMediaContent = asyncHandler(async (req, res) => {
         throw new Error('Please add a text field')
     }
 
+    if(!req.body.content_description) {
+        res.status(400)
+        throw new Error('Please enter the content description')
+    }
+
     const mediaContent = await MediaContent.create({
         text: req.body.text,
-        user: req.user.id
+        content_description: req.body.content_description,
+        user: req.body.user,
+        vote_count: req.body.vote_count
     })
+
+    if(req.body.image) {
+
+        const mediaContentImage = await MediaContentImage.create({
+            content: mediaContent.id,
+            image: req.body.image,
+        })
+    }
+
+
     res.status(200).json(mediaContent)
 })
  

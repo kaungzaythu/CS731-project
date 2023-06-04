@@ -11,6 +11,17 @@ const mediaContentSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please add a text value']
     },
+    content_description: {
+        type: String,
+        required: [true, 'Please add the content description']
+    },
+    vote_count: {
+        type: String,
+    },
+    image: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'MediaContentImage',
+    },
 }, {
     timestamps: true
 })

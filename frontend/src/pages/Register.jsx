@@ -5,6 +5,8 @@ import { toast } from 'react-toastify'
 import { FaUser } from 'react-icons/fa'
 import { register, reset } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
+import ImageUploader from '../components/ImageUploader';
+
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -46,12 +48,17 @@ function Register() {
     }))
   }
 
+
+
+
   const onSubmit = (e) => {
     e.preventDefault()
 
     if (password !== password2) {
       toast.error('The passwords entered do not match.')
     } else {
+
+      // console.log(`profile_picture -> ${profile_picture}`)
       const userData = {
         first_name,
         last_name,
@@ -132,13 +139,15 @@ function Register() {
             />
           </div>
           <div>
-            <input
-              type='text'
-              id='profile_picture'
-              name='profile_picture'
-              value={profile_picture}
-              placeholder='to do later as it gonna be base64'
-              onChange={onChange}
+            <label htmlFor="profile_picture">Profile Picture</label>
+            <ImageUploader
+              onImageUpload={(base64) =>
+                
+                setFormData((prevState) => ({
+                  ...prevState,
+                  profile_picture: base64,
+                }))
+              }
             />
           </div>
           <div>

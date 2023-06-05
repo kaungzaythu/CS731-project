@@ -1,12 +1,16 @@
 import {useState, useEffect} from 'react'
 import {FaSignInAlt} from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { login, reset } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
+import GradientButton from '../components/GradientButton'
 
-
+import Grid from '@mui/material/Grid';
+import CustomTextbox from '../components/CustomTextBox';
+import Typography from '@mui/material/Typography';
+import '@fontsource/libre-caslon-text/700.css';
 function Login() {
 
     const [formData, setFormData] = useState({
@@ -62,34 +66,114 @@ function Login() {
     if (isLoading) {
         return <Spinner />
     }
+    return (
+      <form onSubmit={onSubmit}>
+      <Grid container spacing={2} justifyContent="center" >
+        <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'top',
+        height: '100vh' }}>
+          <Grid container spacing={2} justifyContent="left" alignItems="left">
+            <Grid item xs={12}>
+              <Typography sx={{fontFamily:'Libre Caslon Text', paddingTop: '150px' }} variant="h2" align="left">
+                
 
-  return <>
-  <section>
-    <h1>
-        <FaSignInAlt /> Login
-    </h1>
-    <p>Login and start exploring</p>
-  </section>
-  <section className='form'>
-    <form onSubmit={onSubmit}>
-        
-        <div>
-        <input type='email' id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange} />
-        </div>
+               <span style={{ color: '#7A3385' }}>Friend</span><span style={{ color: '#335985' }}>Loop</span>
 
-        <div className="form-group">
-        <input type='password' id='password' name='password' value={password} placeholder='Enter password' onChange={onChange} />
-        </div>
+              </Typography>
+              <Typography sx={{fontFamily:'Libre Caslon Text', paddingTop: '25px' }} variant="h6" align="left">
+                
 
+                <span style={{ color: '#335985' }}>Express Yourself, Connect with Others.</span>
+ 
+               </Typography>
+            </Grid>
+           
+            
+          </Grid>
+        </Grid>
 
-        <div>
-            <button type='submit'>
-                Submit
-            </button>
-        </div>
+        <Grid item xs={12} md={3} sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center',
+        height: '100vh'}}>
+        <Grid container spacing={2} justifyContent="flex">
+            
+            <Grid item xs={12}>
+              <Typography sx={{fontFamily:'lato', padding: '10px 10px', color: '#335985'}}variant="h5" align="center">
+                Login to account
+              </Typography>
+              
+            </Grid>
+            <Grid item xs={12} >
+              <CustomTextbox
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                label="Email"
+                placeholder="Enter your email"
+                onChange={onChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <CustomTextbox
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                label="Password"
+                placeholder="Enter password"
+                onChange={onChange}
+              />
+            </Grid>
+            <Grid item xs={12} align="right">
+            <GradientButton type="submit" text="LOGIN" />
+            </Grid>
+            <Grid item xs={12} align="left" sx={{fontFamily:'lato', color: '#335985'}}>
+              Don't have an account yet? &nbsp;
+             <Link to='/register'>
+                  Register here
+              </Link>
+            </Grid>
+            
+          </Grid>
+         
+        </Grid>
+      </Grid>
     </form>
-  </section>
-  </>
+    );
+//   return <>
+//   <section>
+//     <h1>
+//         <FaSignInAlt /> Login
+//     </h1>
+//     <p>Login and start exploring</p>
+//   </section>
+//   <section>
+//     <form onSubmit={onSubmit}>
+        
+//         <div>
+//         <input type='email' id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange} />
+//         </div>
+
+//         <div>
+
+       
+
+//         <input type='password' id='password' name='password' value={password} placeholder='Enter password' onChange={onChange} />
+//         </div>
+
+
+//         <div>
+//         {/* <Button variant="contained" type='submit'>Submit</Button> */}
+
+      
+//         <GradientButton type='submit' text="LOGIN" />
+        
+//             {/* <button type='submit'>
+//             Submit
+//             </button> */}
+//         </div>
+//     </form>
+//   </section>
+//   </>
   
 }
 

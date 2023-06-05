@@ -16,7 +16,7 @@ function Header() {
     }
 
     return (
-        <header className='header'>
+      <header className='header'>
           <div>
             <Link to='/'>Friend Loop</Link>
           </div>

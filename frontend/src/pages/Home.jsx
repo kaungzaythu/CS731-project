@@ -27,7 +27,6 @@ function Home() {
       dispatch(getMediaContents())
     }
    
-
     return () => {
       dispatch(reset())
     }

@@ -8,7 +8,9 @@ const User = require('../models/userModel')
 //@route    POST /api/users
 //@access   Public
 const registerUser = asyncHandler( async (req, res) => {
+    
     const {first_name, last_name, introduction, email, phone_number, profile_picture, password} = req.body
+    // console.log(`profile_picture => ${profile_picture}`)
     if (!first_name || !last_name || !email || !password) {
         res.status(400)
         throw new Error('Please include all the mandatory fields.')

@@ -46,9 +46,3 @@ Here is a user interface for users to login into FriendLoop Social Media Platfor
 ## 🚀 About Us
 We are a group of individuals who enjoy traveling, technology, and creating apps with delightful animations.
 
-## Acknowledgements
-
- - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
-

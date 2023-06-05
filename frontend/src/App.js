@@ -10,9 +10,9 @@ import Register from './pages/Register';
 function App() {
   return (
     <>
-    <Router>
-      <div>
-        <Header />
+    <Router >
+    <div style={{ backgroundColor: '#EBECF9', minHeight: '100vh' }}>
+        {/* <Header /> */}
         <Routes>
           <Route path='/' element={<Home/>} />
           <Route path='/login' element={<Login/>} />

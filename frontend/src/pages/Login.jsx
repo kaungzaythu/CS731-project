@@ -139,42 +139,6 @@ function Login() {
       </Grid>
     </form>
     );
-//   return <>
-//   <section>
-//     <h1>
-//         <FaSignInAlt /> Login
-//     </h1>
-//     <p>Login and start exploring</p>
-//   </section>
-//   <section>
-//     <form onSubmit={onSubmit}>
-        
-//         <div>
-//         <input type='email' id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange} />
-//         </div>
-
-//         <div>
-
-       
-
-//         <input type='password' id='password' name='password' value={password} placeholder='Enter password' onChange={onChange} />
-//         </div>
-
-
-//         <div>
-//         {/* <Button variant="contained" type='submit'>Submit</Button> */}
-
-      
-//         <GradientButton type='submit' text="LOGIN" />
-        
-//             {/* <button type='submit'>
-//             Submit
-//             </button> */}
-//         </div>
-//     </form>
-//   </section>
-//   </>
-  
 }
 
 export default Login

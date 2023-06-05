@@ -13,6 +13,6 @@ const {protect} = require('../middleware/authMiddleware')
 
 router.route('/').get(protect, getMediaContents).post(protect, createMediaContent)
 
-router.route('/:id').put(protect, updateMediaContent).delete(protect, deleteMediaContent)
+router.route('/:id').put(updateMediaContent).delete(protect, deleteMediaContent)
 
 module.exports = router

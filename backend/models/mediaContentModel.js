@@ -7,10 +7,6 @@ const mediaContentSchema = mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    text: {
-        type: String,
-        required: [true, 'Please add a text value']
-    },
     content_description: {
         type: String,
         required: [true, 'Please add the content description']
@@ -19,9 +15,8 @@ const mediaContentSchema = mongoose.Schema({
         type: String,
     },
     image: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'MediaContentImage',
-    },
+        type: [],
+    }
 }, {
     timestamps: true
 })

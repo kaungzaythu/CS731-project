@@ -3,12 +3,12 @@ import {FaSignInAlt} from 'react-icons/fa'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { login, reset } from '../features/auth/authSlice'
+import { login, authReset } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 import GradientButton from '../components/GradientButton'
+import CustomTextbox from '../components/CustomTextBox';
 
 import Grid from '@mui/material/Grid';
-import CustomTextbox from '../components/CustomTextBox';
 import Typography from '@mui/material/Typography';
 import '@fontsource/libre-caslon-text/700.css';
 function Login() {
@@ -39,7 +39,7 @@ function Login() {
       navigate('/')
     }
 
-    dispatch(reset())
+    dispatch(authReset())
   }, [user, isError, isSuccess, message, navigate, dispatch])
 
 

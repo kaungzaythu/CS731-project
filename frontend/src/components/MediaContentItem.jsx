@@ -8,6 +8,7 @@ function MediaContentItem({mediaContent}) {
     <div>
         <div>
             {new Date(mediaContent.createdAt).toLocaleString('en-US')}
+            {mediaContent.image}
         </div>
         <h2>{mediaContent.text}</h2>
         <button onClick={() => dispatch(deleteMediaContent(mediaContent._id))}>X</button>

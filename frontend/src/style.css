@@ -6,3 +6,17 @@
     border-bottom: 1px solid #e6e6e6;
     margin-bottom: 60px;
   }
+
+  .post-media {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  } 
+
+  img {
+    height: 250px;
+    width: 250px;
+    border-radius: 10%;
+  }

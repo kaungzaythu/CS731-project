@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import '@fontsource/lato/300.css';
 
-function GradientButton({ text, type }) {
+function GradientButton({ text, type, onClick }) {
     const gradientBackground = 'linear-gradient(to right, #7A3385, #CA73D8)';
     const buttonStyle = {
       background: gradientBackground,
@@ -14,7 +14,7 @@ function GradientButton({ text, type }) {
     };
   
     return (
-      <Button varient="contained" type={type} sx={buttonStyle}>
+      <Button varient="contained" type={type} sx={buttonStyle} onClick={onClick}>
          {text}
       </Button>
     );

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FaUser } from 'react-icons/fa'
-import { register, reset } from '../features/auth/authSlice'
+import { register, authReset } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 import ImageUploader from '../components/ImageUploader';
 import Grid from '@mui/material/Grid';
@@ -41,7 +41,7 @@ function Register() {
       navigate('/')
     }
 
-    dispatch(reset())
+    dispatch(authReset())
   }, [user, isError, isSuccess, message, navigate, dispatch])
 
   const onChange = (e) => {
@@ -50,9 +50,6 @@ function Register() {
       [e.target.name]: e.target.value,
     }))
   }
-
-
-
 
   const onSubmit = (e) => {
     e.preventDefault()

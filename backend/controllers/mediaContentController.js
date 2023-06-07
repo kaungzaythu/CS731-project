@@ -7,8 +7,23 @@ const User = require('../models/userModel')
 //@route    GET /api/mediaContents
 //@access   Private
 const getMediaContents = asyncHandler(async (req, res) => {
-    const mediaContents = await MediaContent.find()
-    res.status(200).json(mediaContents)
+    // const mediaContents = await MediaContent.find()
+    // res.status(200).json(mediaContents)
+
+    const mediaContents = await MediaContent.find();
+    const updatedMediaContents = [];
+
+    for (const content of mediaContents) {
+        const user = await User.findById(content.user);
+        const updatedContent = {
+            ...content.toObject(),
+            user: user 
+        };
+        updatedMediaContents.push(updatedContent);
+    }
+
+    res.status(200).json(updatedMediaContents);
+
 })
 
 //@desc     create Media Content

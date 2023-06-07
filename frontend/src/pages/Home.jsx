@@ -25,7 +25,6 @@ function Home() {
       navigate('/')
   }
 
-
   useEffect(() => {
     if (isError) {
       console.log(message)
@@ -53,46 +52,51 @@ function Home() {
 
       <Grid container spacing={2} justifyContent="center">
         {/* First Column */}
-        <Grid item xs={3} height="100vh">
+        <Grid item xs={3} height="100vh" style={{ position: 'sticky', top: 0 }}>
           <Box pl={5} pt={3}>
-            <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 30}} >
+            <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 35}} >
                 <span style={{ color: '#7A3385' }}>Friend</span><span style={{ color: '#335985' }}>Loop</span>
               </Typography>
-              <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 9}}>
+              <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 11}}>
                 <span style={{ color: '#7A3385' }}>Express Yourself, Connect with Others.</span>
               </Typography>
           </Box>
 
           <Box pl={5} pt={10}>
-            <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 30}} >
+            <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 25}} >
                 <span style={{ color: '#335985' }}>Welcome</span>
               </Typography>
-              <Typography sx={{fontFamily:'Lato', fontSize: 20, fontWeight: 'bold'}}>
+              <Typography sx={{fontFamily:'lato', fontSize: 20, fontWeight: 'bold'}}>
                 <span >{user && user.first_name + " " + user.last_name}</span>
               </Typography>
           </Box>
 
           <Box pl={5} position="absolute" bottom="50px">
-          <GradientButton  onClick={onLogout} text="LOGOUT" />
+            <GradientButton  onClick={onLogout} text="LOGOUT" />
           </Box>
         </Grid>
-
-        <Grid item xs={6}><section>
-        {mediaContents.length > 0 ? (
-          <div>
-            {mediaContents.map((mediaContent) => (
-              <MediaContentItem key={mediaContent._id} mediaContent={mediaContent} />
-            ))}
-          </div>
-        ) : (
-          <h3>You have not create any media contents</h3>
-        )}
-      </section></Grid>
-        <Grid item xs={3}>right</Grid>
+        {/* Second Column */}
+        <Grid item xs={6}>
+          <Box pt={4}></Box>
+          <section>
+            {mediaContents.length > 0 ? (
+              <div>
+                {mediaContents
+                .slice() // Sort put the lastest on the top
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) 
+                .map((mediaContent) => (
+                  <MediaContentItem key={mediaContent._id} mediaContent={mediaContent} />
+                ))}
+              </div>
+            ) : (
+              <h3>You have not create any media contents</h3>
+            )}
+          </section>
+          </Grid>
+          {/* Third Column */}
+        <Grid item xs={3} height="100vh" style={{ position: 'sticky', top: 0 }}>right</Grid>
       </Grid>
-
-
-
+    
       
     </>
   )

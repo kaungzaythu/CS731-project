@@ -2,11 +2,23 @@ import React from 'react'
 
 function Spinner() {
   return (
-    <div className='loadingSpinnerContainer'>
-        <div className='loadingSpinner'>
-
+    <div className='loadingFriendLoopSpinnerBackground'>
+        <div class="friendloop-spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
-    </div>
+     </div>
+    
   )
 }
 

@@ -8,7 +8,6 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/lato": "^5.0.2",
     "@fontsource/libre-caslon-text": "^5.0.2",
-    "@mui/material": "^5.13.4",
     "@mui/icons-material": "^5.11.16",
     "@mui/styled-engine-sc": "^5.12.0",
     "@reduxjs/toolkit": "^1.9.5",

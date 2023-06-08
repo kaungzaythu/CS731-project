@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { FaUser } from 'react-icons/fa'
 import { register, authReset } from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 import ImageUploader from '../components/ImageUploader';
@@ -79,8 +78,7 @@ function Register() {
 
   return (
     <>
-      
-
+    
       <section>
         <form onSubmit={onSubmit}>
               <Grid container spacing={2} justifyContent="center">
@@ -110,6 +108,10 @@ function Register() {
                           </Grid>
                           <Grid item xs={4} align='center' >
                             <ImageUploader
+                            width={150}
+                            height={150}
+                            shape="circle"
+                            maxImages={1} 
                             onImageUpload={(base64) =>
                               
                               setFormData((prevState) => ({

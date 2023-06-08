@@ -14,9 +14,28 @@ const mediaContentSchema = mongoose.Schema({
     vote_count: {
         type: String,
     },
+    up_vote: {
+      type: [],
+    },
     image: {
         type: [],
-    }
+    },
+    comments: [
+        {
+          user_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+          },
+          comment: {
+            type: String,
+            required: true,
+          },
+          date_time: {
+            type: Date,
+            default: Date.now,
+          },
+        },
+      ],
 }, {
     timestamps: true
 })

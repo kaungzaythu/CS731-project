@@ -3,11 +3,8 @@ import {deleteMediaContent} from '../features/mediaContents/mediaContentSlice'
 import { Grid, Box, IconButton, Avatar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ClearIcon from '@mui/icons-material/Clear';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
-import UpvoteIcon from "./UpvoteIcon";
 import DownvoteIcon from "./DownvoteIcon";
-
+import UpvoteIcon from "./UpvoteIcon";
 
 function MediaContentItem({mediaContent}) {
 

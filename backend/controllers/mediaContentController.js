@@ -85,8 +85,8 @@ const updateMediaContentComment = asyncHandler(async (req, res) => {
 
     if(findMediaContent) {
         const newComment = {
-            comment: req.body['comments.comment'],
-            user_id: req.body['comments.user_id'],
+            comment: req.body.comment,
+            user_id: req.body.user_id,
             date_time: new Date()
         };
           
@@ -97,8 +97,8 @@ const updateMediaContentComment = asyncHandler(async (req, res) => {
         const mediaContent = await MediaContent.create({
             _id: req.params.id,
             comments: [{
-              comment: req.body['comments.comment'],
-              user_id: req.body['comments.user_id'],
+              comment: req.body.comment,
+              user_id: req.body.user_id,
               date_time: new Date()
             }]
             // Add other properties as needed

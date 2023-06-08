@@ -30,23 +30,32 @@ const ImageUploader = ({ onImageUpload }) => {
         width: '150px',
         height: '150px',
         border: '2px dashed #7A3385',
-        borderRadius: '50%', // Make it a circle by setting borderRadius to 50%
+        borderRadius: '50%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         cursor: 'pointer',
-        overflow: 'hidden', // Hide the parts of the image outside the circle
+        overflow: 'hidden',
       }}
     >
-      {imageData ? (
-        <img
-          src={imageData}
-          alt="Uploaded Image"
-          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }} // Maintain aspect ratio and cover the circle area
-        />
-      ) : (
-        <span>Drag and drop an image here</span>
-      )}
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          borderRadius: '50%',
+          overflow: 'hidden',
+        }}
+      >
+        {imageData ? (
+          <img
+            src={imageData}
+            alt="Uploaded Image"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        ) : (
+          <span>Drag and drop an image here</span>
+        )}
+      </div>
     </div>
   );
 };

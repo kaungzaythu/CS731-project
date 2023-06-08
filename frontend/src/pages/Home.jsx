@@ -4,11 +4,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import MediaContentItem from '../components/MediaContentItem'
 import Spinner from '../components/Spinner'
 import { getMediaContents, reset } from '../features/mediaContents/mediaContentSlice'
-import {logout, authReset} from '../features/auth/authSlice'
-import GradientButton from '../components/GradientButton'
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import LeftSection from '../components/LeftSection'
+import "../style.css";
+
 
 function Home() {
   const navigate = useNavigate()
@@ -19,11 +19,11 @@ function Home() {
     (state) => state.mediaContents
   )
 
-  const onLogout = () => {
-      dispatch(logout())
-      dispatch(authReset())
-      navigate('/')
-  }
+  // const onLogout = () => {
+  //     dispatch(logout())
+  //     dispatch(authReset())
+  //     navigate('/')
+  // }
 
   useEffect(() => {
     if (isError) {
@@ -45,15 +45,14 @@ function Home() {
   if (isLoading) {
     return <Spinner />
   }
-
   return (
     <>
-      {/* <MediaContentForm /> */}
-
+    
       <Grid container spacing={2} justifyContent="center">
         {/* First Column */}
         <Grid item xs={3} height="100vh" style={{ position: 'sticky', top: 0 }}>
-          <Box pl={5} pt={3}>
+          <LeftSection/>
+          {/* <Box pl={5} pt={3}>
             <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 35}} >
                 <span style={{ color: '#7A3385' }}>Friend</span><span style={{ color: '#335985' }}>Loop</span>
               </Typography>
@@ -73,7 +72,7 @@ function Home() {
 
           <Box pl={5} position="absolute" bottom="50px">
             <GradientButton  onClick={onLogout} text="LOGOUT" />
-          </Box>
+          </Box> */}
         </Grid>
         {/* Second Column */}
         <Grid item xs={6}>
@@ -89,7 +88,7 @@ function Home() {
                 ))}
               </div>
             ) : (
-              <h3>You have not create any media contents</h3>
+              <h3>You have not created any media contents</h3>
             )}
           </section>
           </Grid>

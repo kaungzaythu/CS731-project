@@ -10,7 +10,6 @@ function MediaContentForm() {
 
 const onSubmit = (e) => {
 
-
   e.preventDefault()
 
   dispatch(createMediaContent({text}))

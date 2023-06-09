@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import {deleteMediaContent} from '../features/mediaContents/mediaContentSlice'
 import { Grid, Box, IconButton, Avatar } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -7,6 +7,8 @@ import DownvoteIcon from "./DownvoteIcon";
 import UpvoteIcon from "./UpvoteIcon";
 
 function MediaContentItem({mediaContent}) {
+
+    const { user } = useSelector((state) => state.auth);
 
     const dispatch = useDispatch()
 
@@ -21,6 +23,7 @@ function MediaContentItem({mediaContent}) {
         hour12: true,
       };
       const formattedDate = date.toLocaleDateString(undefined, options);
+      // console.log(mediaContent._id)
       return `${formattedDate}`;
     };
 
@@ -34,23 +37,23 @@ function MediaContentItem({mediaContent}) {
       if (images.length === 1) {
         return (
           <div style={{ height: '200px' }}>
-            <img src={`data:image/png;base64, ${images[0]}`}  style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={images[0]}  style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
         );
       } else if (images.length === 2) {
         return (
           <div style={{ height: '200px', display: 'flex' }}>
-            <img src={`data:image/png;base64, ${images[0]}`}  style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
-            <img src={`data:image/png;base64, ${images[1]}`}  style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
+            <img src={images[0]}   style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
+            <img src={images[1]}   style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
           </div>
         );
       } else if (images.length === 3) {
         return (
           <div style={{ height: '200px', display: 'flex' }}>
-            <img src={`data:image/png;base64, ${images[0]}`}  style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
+            <img src={images[0]}  style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
             <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
-              <img src={`data:image/png;base64, ${images[1]}`}  style={{ width: '100%', height: '50%', objectFit: 'cover', marginBottom: '1rem' }} />
-              <img src={`data:image/png;base64, ${images[2]}`}  style={{ width: '100%', height: '50%', objectFit: 'cover' }} />
+              <img src={images[1]}  style={{ width: '100%', height: '50%', objectFit: 'cover', marginBottom: '1rem' }} />
+              <img src={images[2]}  style={{ width: '100%', height: '50%', objectFit: 'cover' }} />
             </div>
           </div>
         );
@@ -58,6 +61,21 @@ function MediaContentItem({mediaContent}) {
     
       return null;
     };
+
+    const voteCount = () => {
+
+    //   console.log('current user id is ==>' + user._id)
+    //  console.log('current ==>' + mediaContent.down_vote.includes(user._id))
+
+    // console.log(mediaContent._id)
+
+
+      var upvote = mediaContent.up_vote.length
+      var downvote = mediaContent.down_vote.length
+     return upvote - downvote;
+    };
+
+    
 
   return (
     <>
@@ -102,15 +120,22 @@ function MediaContentItem({mediaContent}) {
                     {renderImages()}
                     {/* <img src="/path/to/image.jpg" alt="Post Image" style={{ maxWidth: '100%' }} /> */}
             </Box>
+            {/* {color === 'neutral_down' ? 'neutral_down' : 'active_down'} */}
 
-
-            <Box display="flex" alignItems="center" mt={2}>
-              <UpvoteIcon />
+            <Box display="flex" alignItems="center" mt={2} width="fit-content">
+              <UpvoteIcon 
+                color={mediaContent.up_vote.includes(user._id) ? "" : "neutral_up" }
+                mediaContent_id={mediaContent._id}
+                voter_id={user._id}/>
               <Typography 
-               sx={{mx:3, fontFamily: 'Lato', fontSize: 12, fontWeight: 'bold', color:'#000000'}}>
-                {mediaContent.vote_count}
+               sx={{mx:3, fontFamily: 'Lato', fontSize: 15, fontWeight: 'bold', color:'#000000', paddingRight:'10px'}}>
+                {voteCount()}
               </Typography>
-              <DownvoteIcon />
+              <DownvoteIcon color={
+               
+                mediaContent.down_vote.includes(user._id) ? "" : "neutral_down" 
+                
+                }/>
             </Box>
       </Box>
          

@@ -3,7 +3,7 @@ import React from 'react'
 function Spinner() {
   return (
     <div className='loadingFriendLoopSpinnerBackground'>
-        <div class="friendloop-spinner">
+        <div className='friendloop-spinner'>
           <div></div>
           <div></div>
           <div></div>

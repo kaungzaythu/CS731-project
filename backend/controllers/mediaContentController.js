@@ -7,21 +7,34 @@ const User = require('../models/userModel')
 //@route    GET /api/mediaContents
 //@access   Private
 const getMediaContents = asyncHandler(async (req, res) => {
-    // const mediaContents = await MediaContent.find()
-    // res.status(200).json(mediaContents)
 
     const mediaContents = await MediaContent.find();
     const updatedMediaContents = [];
 
+    
+
     for (const content of mediaContents) {
+
+        const updatedComments = await Promise.all(
+            content.comments.map(async (comment) => {
+              const commentUser = await User.findById(comment.user_id);
+              return {
+                comment: comment.comment,
+                date_time: comment.date_time,
+                user: commentUser,
+              };
+            })
+          );
+
         const user = await User.findById(content.user);
         const updatedContent = {
             ...content.toObject(),
-            user: user 
+            user: user,
+            comments: updatedComments,
         };
         updatedMediaContents.push(updatedContent);
     }
-
+   
     res.status(200).json(updatedMediaContents);
 
 })
@@ -122,10 +135,27 @@ const updateMediaContentVote = asyncHandler(async (req, res) => {
     const findMediaContent = await MediaContent.findById(req.params.id);
     const user_id = req.body.user_id;
     const mediaContentId = req.params.id;
-    const upVoteCount = await MediaContent.find({"up_vote.user_id": user_id}).count();
-    const downVoteCount = await MediaContent.find({"down_vote.user_id": user_id}).count();
     
     if(findMediaContent) {
+        const upVotes = findMediaContent.up_vote; 
+        const downVotes = findMediaContent.down_vote; 
+
+        let upVoteCount = 0;
+        let downVoteCount = 0;
+      
+        for (const vote of upVotes) {
+          if (vote.user_id.toString() === user_id) {
+            upVoteCount = 1;
+            break; 
+          }
+        }
+        for (const vote of downVotes) {
+            if (vote.user_id.toString() === user_id) {
+              downVoteCount = 1;
+              break; 
+            }
+          }
+        
         if(req.body.vote_action == "up_vote") {
 
             if(upVoteCount == 1) {

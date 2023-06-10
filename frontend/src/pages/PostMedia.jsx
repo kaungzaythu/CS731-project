@@ -42,6 +42,7 @@ function PostMedia() {
 
     return () => {
       // dispatch(reset())
+      // navigate("/");
     };
   }, [user, navigate, isError, message, dispatch]);
 
@@ -52,7 +53,7 @@ function PostMedia() {
     }));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
    
     if (content_description === '') {
@@ -67,7 +68,8 @@ function PostMedia() {
         ...(media_images && { image: media_images })
       }
 
-      dispatch(createMediaContent(mediaContentData))
+      await dispatch(createMediaContent(mediaContentData))
+      navigate("/");
     }
   };
 
@@ -157,7 +159,7 @@ function PostMedia() {
               height="100vh"
               style={{ position: "sticky", top: 0 }}
             >
-              right
+              
             </Grid>
           </Grid>
         </form>

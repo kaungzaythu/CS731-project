@@ -19,13 +19,8 @@
       (state) => state.mediaContents
     )
 
-    // const onLogout = () => {
-    //     dispatch(logout())
-    //     dispatch(authReset())
-    //     navigate('/')
-    // }
-
     useEffect(() => {
+      
       if (isError) {
         console.log(message)
       }
@@ -47,7 +42,6 @@
     }
     return (
       <>
-      
         <Grid container spacing={2} justifyContent="center">
           {/* First Column */}
           <Grid item xs={3} height="100vh" style={{ position: 'sticky', top: 0 }}>
@@ -93,7 +87,7 @@
             </section>
             </Grid>
             {/* Third Column */}
-          <Grid item xs={3} height="100vh" style={{ position: 'sticky', top: 0 }}>right</Grid>
+          <Grid item xs={3} height="100vh" style={{ position: 'sticky', top: 0 }}></Grid>
         </Grid>
       
         

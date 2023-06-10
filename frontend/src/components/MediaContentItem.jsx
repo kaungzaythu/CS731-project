@@ -1,16 +1,31 @@
+import React, { useState } from 'react';
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import {deleteMediaContent} from '../features/mediaContents/mediaContentSlice'
+import {Link, useNavigate } from 'react-router-dom'
+import {deleteMediaContent, reset} from '../features/mediaContents/mediaContentSlice'
 import { Grid, Box, IconButton, Avatar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ClearIcon from '@mui/icons-material/Clear';
 import DownvoteIcon from "./DownvoteIcon";
 import UpvoteIcon from "./UpvoteIcon";
+import DownvoteIconNeutral from "./DownvoteIconNeutral"
+import UpvoteIconNeutral from "./UpvoteIconNeutral"
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
+import GradientButton from "../components/GradientButton";
+
 
 function MediaContentItem({mediaContent}) {
 
     const { user } = useSelector((state) => state.auth);
+    const [openCommentForm, setOpenCommentForm] = useState(false);
+    const [newComment, setNewComment] = useState('');
 
-    const dispatch = useDispatch()
+    // Sort comments by the latest date-time
+    const handleAddComment = () => {
+      // Handle adding a new comment here
+      // Access the new comment value from the 'newComment' state
+    };
+  
 
     const formatDate = (dateString) => {
       const date = new Date(dateString);
@@ -63,19 +78,60 @@ function MediaContentItem({mediaContent}) {
     };
 
     const voteCount = () => {
-
-    //   console.log('current user id is ==>' + user._id)
-    //  console.log('current ==>' + mediaContent.down_vote.includes(user._id))
-
-    // console.log(mediaContent._id)
-
-
       var upvote = mediaContent.up_vote.length
       var downvote = mediaContent.down_vote.length
-     return upvote - downvote;
+      return upvote - downvote;
     };
 
-    
+    const commentCount = () => {
+      const totalSize = mediaContent.comments.length;
+      const comment = totalSize === 0 ? 'COMMENT' : totalSize === 1 ? `COMMENT (${totalSize})` : `COMMENTS (${totalSize})`;
+      return comment;
+    };
+
+    const downVoteButton = () => {
+      var containsId = mediaContent.down_vote.some(item => item.user_id === user?._id);
+      if (containsId) {
+        return (
+          <DownvoteIcon
+            mediaContentId={mediaContent._id}
+            voterId={user?._id}
+          />
+        )
+      }
+      else {
+        return (
+          <DownvoteIconNeutral
+            mediaContentId={mediaContent._id}
+            voterId={user?._id}
+          />
+        )
+      }
+    }
+
+    const upVoteButton = () => {
+      var containsId = mediaContent.up_vote.some(item => item.user_id === user?._id);
+      if (containsId) {
+        return (
+          <UpvoteIcon
+            mediaContentId={mediaContent._id}
+            voterId={user?._id}
+          />
+        )
+      }
+      else {
+        return (
+          <UpvoteIconNeutral 
+            mediaContentId={mediaContent._id}
+            voterId={user?._id}
+          />
+        )
+      }
+    }
+
+    const handleCommentSubmit = () => {
+
+    }
 
   return (
     <>
@@ -118,29 +174,73 @@ function MediaContentItem({mediaContent}) {
                     </Typography>
                     <br></br>
                     {renderImages()}
-                    {/* <img src="/path/to/image.jpg" alt="Post Image" style={{ maxWidth: '100%' }} /> */}
+                  
             </Box>
-            {/* {color === 'neutral_down' ? 'neutral_down' : 'active_down'} */}
 
-            <Box display="flex" alignItems="center" mt={2} width="fit-content">
-              <UpvoteIcon 
-                color={mediaContent.up_vote.includes(user._id) ? "" : "neutral_up" }
-                mediaContent_id={mediaContent._id}
-                voter_id={user._id}/>
-              <Typography 
-               sx={{mx:3, fontFamily: 'Lato', fontSize: 15, fontWeight: 'bold', color:'#000000', paddingRight:'10px'}}>
-                {voteCount()}
-              </Typography>
-              <DownvoteIcon color={
-               
-                mediaContent.down_vote.includes(user._id) ? "" : "neutral_down" 
+            <Box display="flex" alignItems="center" mt={2} >
+                {upVoteButton()}
+                <Typography 
+                sx={{mx:3, fontFamily: 'Lato', fontSize: 15, fontWeight: 'bold', color:'#000000', paddingRight:'10px'}}>
+                  {voteCount()}
+                </Typography>
+              
+                {downVoteButton()}
+                <Typography
+                  to="/"
+                  component={Link}
+                  sx={{
+                    fontFamily: 'lato',
+                    fontSize: 13,
+                    marginLeft: 'auto',
+                  }}
+                  onClick={() => setOpenCommentForm(true)}
+                >
+                  {commentCount()}
+                </Typography>
+           
                 
-                }/>
+                <Dialog open={openCommentForm} onClose={() => setOpenCommentForm(false)}>
+             
+                  <DialogContent >
+                  <Box>
+                    <Box mb={2}>
+                      <TextField
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                        placeholder="Write a comment..."
+                        multiline
+                        rows={2}
+                        variant="outlined"
+                        fullWidth
+                      />
+                      <GradientButton type="submit" onClick={handleAddComment}  text="Add Comment" />
+                    </Box>
+
+                    <List>
+                      {mediaContent.comments.map((comment) => (
+                        <ListItem key={comment.comment_id} disablePadding>
+                          <ListItemText
+                            primaryTypographyProps={{ variant: 'subtitle1', fontWeight: 'bold' }}
+                            primary={comment.user && comment.user.last_name}
+                            secondary={comment.comment}
+                          />
+                          <Typography variant="caption" color="textSecondary">
+                            {comment.date_time}
+                          </Typography>
+                        </ListItem>
+                      ))}
+                    </List>
+                  </Box>
+                  </DialogContent>
+              
+                </Dialog>
+
+                </Box>
             </Box>
       </Box>
          
          
-        </Box>
+   
     </Grid>
 
     <div>
@@ -152,7 +252,7 @@ function MediaContentItem({mediaContent}) {
         <h2>{mediaContent.text}</h2>
         
       </div></>
-  )
+  );
 }
 
 export default MediaContentItem

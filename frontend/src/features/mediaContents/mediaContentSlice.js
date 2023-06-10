@@ -47,6 +47,24 @@ export const getMediaContents = createAsyncThunk(
   }
 )
 
+export const updateVote = createAsyncThunk(
+  'mediaContents/updateVote',
+  async (voteData, thunkAPI) => {
+    try {
+      return await mediaContentService.updateVote(voteData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+    
+  }
+)
+
 // Delete user media contents
 export const deleteMediaContent = createAsyncThunk(
   'mediaContents/delete',
@@ -111,6 +129,19 @@ export const mediaContentSlice = createSlice({
         )
       })
       .addCase(deleteMediaContent.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(updateVote.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateVote.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.mediaContents.push(action.payload)
+      })
+      .addCase(updateVote.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload

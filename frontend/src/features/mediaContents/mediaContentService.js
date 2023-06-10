@@ -15,6 +15,18 @@ const createMediaContent = async (mediaContentData, token) => {
   return response.data
 }
 
+const updateVote = async (voteData) => {
+  const mediaContentId = voteData.mediaContentId
+  const newVoteData = {
+    user_id: voteData.user_id,
+    vote_action: voteData.vote_action
+  }
+
+  const response = await axios.put(API_URL + 'updateVote/' + mediaContentId, newVoteData)
+
+  return response.data
+}
+
 // Get user media contents
 const getMediaContents = async (token) => {
   const config = {
@@ -45,6 +57,7 @@ const mediaContentService = {
   createMediaContent,
   getMediaContents,
   deleteMediaContent,
+  updateVote,
 }
 
 export default mediaContentService

@@ -27,6 +27,19 @@ const updateVote = async (voteData) => {
   return response.data
 }
 
+const updateComment = async (commentData) => {
+  const mediaContentId = commentData.mediaContentId
+  const newCommentData = {
+    user_id: commentData.user_id,
+    comment: commentData.comment
+  }
+
+  const response = await axios.put(API_URL + 'updateComment/' + mediaContentId, newCommentData)
+
+  return response.data
+}
+
+
 // Get user media contents
 const getMediaContents = async (token) => {
   const config = {
@@ -58,6 +71,7 @@ const mediaContentService = {
   getMediaContents,
   deleteMediaContent,
   updateVote,
+  updateComment
 }
 
 export default mediaContentService

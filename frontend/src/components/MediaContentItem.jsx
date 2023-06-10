@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import {Link, useNavigate } from 'react-router-dom'
-import {deleteMediaContent, reset} from '../features/mediaContents/mediaContentSlice'
+import {getMediaContents, reset,updateCommentDB, updateComment} from '../features/mediaContents/mediaContentSlice'
 import { Grid, Box, IconButton, Avatar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -10,20 +10,38 @@ import DownvoteIcon from "./DownvoteIcon";
 import UpvoteIcon from "./UpvoteIcon";
 import DownvoteIconNeutral from "./DownvoteIconNeutral"
 import UpvoteIconNeutral from "./UpvoteIconNeutral"
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
-import GradientButton from "../components/GradientButton";
-
+import { Dialog, Divider, DialogContent, DialogActions, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 
 function MediaContentItem({mediaContent}) {
+
+  const sortedComments = [...mediaContent.comments].sort((a, b) => new Date(b.date_time) - new Date(a.date_time));
+  // mediaContent.comments.sort((a, b) => new Date(b.date_time) - new Date(a.date_time));
 
     const { user } = useSelector((state) => state.auth);
     const [openCommentForm, setOpenCommentForm] = useState(false);
     const [newComment, setNewComment] = useState('');
+    const [comments, setComments] = useState(mediaContent.comments); // Track the list of comments
 
-    // Sort comments by the latest date-time
-    const handleAddComment = () => {
-      // Handle adding a new comment here
-      // Access the new comment value from the 'newComment' state
+    
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const handleAddComment = async () => {
+    const Comment = {
+        user: user,
+        comment: newComment,
+        mediaContentId: mediaContent._id,
+     }
+     const CommentDB = {
+      user_id: user?._id,
+      comment: newComment,
+      mediaContentId: mediaContent._id,
+   }
+     
+     dispatch(updateComment(Comment))//state
+     dispatch(updateCommentDB(CommentDB))
+     setNewComment(''); 
     };
   
 
@@ -129,10 +147,6 @@ function MediaContentItem({mediaContent}) {
       }
     }
 
-    const handleCommentSubmit = () => {
-
-    }
-
   return (
     <>
     <Grid >
@@ -202,9 +216,11 @@ function MediaContentItem({mediaContent}) {
                 <Dialog open={openCommentForm} onClose={() => setOpenCommentForm(false)}>
              
                   <DialogContent >
-                  <Box>
-                    <Box mb={2}>
+                  <Box style={{width: '500px'}}>
+                  <Box display="flex" alignItems="center">
+                  
                       <TextField
+                        id="new_comment"
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                         placeholder="Write a comment..."
@@ -213,22 +229,47 @@ function MediaContentItem({mediaContent}) {
                         variant="outlined"
                         fullWidth
                       />
-                      <GradientButton type="submit" onClick={handleAddComment}  text="Add Comment" />
+                      <IconButton size="big" style={{ color: '#7A3385'}} 
+                        onClick={handleAddComment}
+                      >
+                        <SendIcon  style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}}  />
+                      </IconButton>
+                    
+                      {/* <GradientButton type="submit" onClick={handleAddComment}  text="Add Comment" /> */}
                     </Box>
 
                     <List>
-                      {mediaContent.comments.map((comment) => (
-                        <ListItem key={comment.comment_id} disablePadding>
-                          <ListItemText
-                            primaryTypographyProps={{ variant: 'subtitle1', fontWeight: 'bold' }}
-                            primary={comment.user && comment.user.last_name}
-                            secondary={comment.comment}
-                          />
-                          <Typography variant="caption" color="textSecondary">
-                            {comment.date_time}
-                          </Typography>
-                        </ListItem>
+                      
+                      {
+                      sortedComments
+                      .map((comment) => (
+                        <Box display="flex" flexDirection="column" p={1}>
+                          <Box display="flex" alignItems="center" justifyContent="space-between">
+                            <Box display="flex" alignItems="center">
+                              <Avatar  style={{ color: '#7A3385'}}/>
+                              <Box ml={2}>
+                                <Typography variant="subtitle1">
+                                {comment.user && comment.user.first_name + ' ' + comment.user.last_name}
+                                  </Typography>
+                                <Typography sx={{ fontFamily: 'Lato', fontSize: 10, fontWeight: 'bold', color:'#335985'}}>
+                                  {formatDate(comment.date_time)}
+                                </Typography>
+                              </Box>
+                            </Box>
+                            
+                          </Box>
+                          <Box mt={1}>
+                                  <Typography sx={{ fontFamily: 'Lato', fontSize: 15, fontWeight: 'bold', textAlign: 'justify'}}>
+                                    {comment.comment}
+                                  </Typography>
+
+                          </Box>
+                          <br/>
+                          <Divider orientation="horizontal" style={{ width: '100%', height: '1px' }} />
+                          </Box>
+
                       ))}
+                      
                     </List>
                   </Box>
                   </DialogContent>

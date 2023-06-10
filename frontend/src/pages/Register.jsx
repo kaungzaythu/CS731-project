@@ -265,20 +265,7 @@ function Register() {
               </Grid>
         
               <Grid container spacing={2} sx={{paddingTop: '50px'}}>
-              
-                
-                
-
-               
-
-                
-
-                
-               
             </Grid>
-
-        
-          
         </form>
       </section>
     </>

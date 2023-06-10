@@ -65,6 +65,24 @@ export const updateVote = createAsyncThunk(
   }
 )
 
+export const updateCommentDB = createAsyncThunk(
+  'mediaContents/updateComment',
+  async (commentData, thunkAPI) => {
+    try {
+      return await mediaContentService.updateComment(commentData)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+    
+  }
+)
+
 // Delete user media contents
 export const deleteMediaContent = createAsyncThunk(
   'mediaContents/delete',
@@ -89,6 +107,27 @@ export const mediaContentSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => initialState,
+    updateComment(state, action) {
+      const { mediaContentId, comment, user} = action.payload;
+      const newComment = {
+        user: user,
+        date_time: new Date(),
+        comment: comment,
+        mediaContentId: mediaContentId
+     }
+    
+      // Find the mediaContent by mediaContentId
+      const mediaContent = state.mediaContents.find(
+        (content) => content._id === mediaContentId
+      );
+    
+      // If the mediaContent is found, add the new comment
+      if (mediaContent) {
+        mediaContent.comments.push(newComment);
+      }
+
+      return state;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -148,6 +187,6 @@ export const mediaContentSlice = createSlice({
       })
   },
 })
-
+export const { updateComment } = mediaContentSlice.actions;
 export const { reset } = mediaContentSlice.actions
 export default mediaContentSlice.reducer

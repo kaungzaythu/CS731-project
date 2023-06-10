@@ -1,3 +1,4 @@
+import React from 'react';
   import { useEffect } from 'react'
   import { useNavigate } from 'react-router-dom'
   import { useSelector, useDispatch } from 'react-redux'
@@ -78,7 +79,10 @@
                   .slice() // Sort put the lastest on the top
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) 
                   .map((mediaContent) => (
-                    <MediaContentItem key={mediaContent._id} mediaContent={mediaContent} />
+                    <React.Fragment key={mediaContent._id}>
+
+                    <MediaContentItem  mediaContent={mediaContent} />
+                    </React.Fragment>
                   ))}
                 </div>
               ) : (

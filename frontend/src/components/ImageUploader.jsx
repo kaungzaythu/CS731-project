@@ -53,7 +53,21 @@ const ImageUploader = ({ onImageUpload }) => {
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : (
-          <span>Drag and drop an image here</span>
+          <span
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              height: '100%',
+              textAlign: 'center',
+              fontFamily: 'sans-serif',
+              fontWeight: 'bold',
+              fontSize: '14px',
+            }}
+          >
+            Drag and drop an image here
+          </span>
         )}
       </div>
     </div>

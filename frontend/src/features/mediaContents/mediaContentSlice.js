@@ -47,7 +47,7 @@ export const getMediaContents = createAsyncThunk(
   }
 )
 
-export const updateVote = createAsyncThunk(
+export const updateVoteDB = createAsyncThunk(
   'mediaContents/updateVote',
   async (voteData, thunkAPI) => {
     try {
@@ -127,7 +127,63 @@ export const mediaContentSlice = createSlice({
       }
 
       return state;
+    },
+    updateVote(state, action) {
+      const { mediaContentId, vote_action, user_id} = action.payload;
+
+      const voteData = {
+        user_id: user_id,
+        vote_action: vote_action,
+        mediaContentId: mediaContentId
+      }
+
+      // Find the mediaContent by mediaContentId
+      const mediaContent = state.mediaContents.find(
+        (content) => content._id === mediaContentId
+      );
+    
+      // If the mediaContent is found, add the new comment
+      if (mediaContent) {
+          if (vote_action === 'up_vote') {
+            const upVoteIndex = mediaContent.up_vote.findIndex((item) => item.user_id === user_id);
+            if (upVoteIndex !== -1) {
+              // If user_id exists, delete the item
+              mediaContent.up_vote.splice(upVoteIndex, 1);
+            } else {
+              // If user_id doesn't exist, add the item
+              mediaContent.up_vote.push({ user_id: user_id });
+            }
+
+            // remove from down_vote
+            const downVoteIndex = mediaContent.down_vote.findIndex((item) => item.user_id === user_id);
+            if (downVoteIndex !== -1) {
+              // If user_id exists, delete the item
+              mediaContent.down_vote.splice(downVoteIndex, 1);
+            }
+          }
+          else if (vote_action === 'down_vote') {
+            const downVoteIndex = mediaContent.down_vote.findIndex((item) => item.user_id === user_id);
+            if (downVoteIndex !== -1) {
+              // If user_id exists, delete the item
+              mediaContent.down_vote.splice(downVoteIndex, 1);
+            } else {
+              // If user_id doesn't exist, add the item
+              mediaContent.down_vote.push({ user_id: user_id });
+            }
+
+            // remove from up_vote
+            const upVoteIndex = mediaContent.up_vote.findIndex((item) => item.user_id === user_id);
+            if (upVoteIndex !== -1) {
+              // If user_id exists, delete the item
+              mediaContent.up_vote.splice(upVoteIndex, 1);
+            } 
+          }
+        // mediaContent.comments.push(newComment);
+      }
+
+      return state;
     }
+
   },
   extraReducers: (builder) => {
     builder
@@ -172,21 +228,22 @@ export const mediaContentSlice = createSlice({
         state.isError = true
         state.message = action.payload
       })
-      .addCase(updateVote.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(updateVote.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.isSuccess = true
-        state.mediaContents.push(action.payload)
-      })
-      .addCase(updateVote.rejected, (state, action) => {
-        state.isLoading = false
-        state.isError = true
-        state.message = action.payload
-      })
+      // .addCase(updateVoteDB.pending, (state) => {
+      //   state.isLoading = true
+      // })
+      // .addCase(updateVoteDB.fulfilled, (state, action) => {
+      //   state.isLoading = false
+      //   state.isSuccess = true
+      //   state.mediaContents.push(action.payload)
+      // })
+      // .addCase(updateVoteDB.rejected, (state, action) => {
+      //   state.isLoading = false
+      //   state.isError = true
+      //   state.message = action.payload
+      // })
   },
 })
+export const { updateVote } = mediaContentSlice.actions;
 export const { updateComment } = mediaContentSlice.actions;
 export const { reset } = mediaContentSlice.actions
 export default mediaContentSlice.reducer

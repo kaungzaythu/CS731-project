@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from "react-redux";
-import { updateVote } from '../features/mediaContents/mediaContentSlice'
+import { updateVoteDB, updateVote } from '../features/mediaContents/mediaContentSlice'
 
 const DownvoteIconNeutral = ({ voterId, mediaContentId }) => {
     const dispatch = useDispatch()
@@ -10,8 +10,8 @@ const DownvoteIconNeutral = ({ voterId, mediaContentId }) => {
         vote_action: 'down_vote',
         mediaContentId: mediaContentId
     }
-  
     dispatch(updateVote(voteData))
+    dispatch(updateVoteDB(voteData))
     };
 
     return (

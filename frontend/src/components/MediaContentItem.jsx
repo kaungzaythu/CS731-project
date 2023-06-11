@@ -181,10 +181,10 @@ function MediaContentItem({mediaContent, redirect}) {
           <Box display="flex" flexDirection="column" p={2}>
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <Box display="flex" alignItems="center">
-                <Avatar src={mediaContent.user.profile_picture} alt="Kvatar" style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}}/>
+                <Avatar src={mediaContent.user?.profile_picture} alt="Kvatar" style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}}/>
                 <Box ml={2}>
                   <Typography variant="subtitle1">
-                    {mediaContent.user.first_name + ' ' + mediaContent.user.last_name }<span style={{ color: '#808080', fontSize: '15px'}}>{ ' ' + mediaContent.user.introduction }</span>
+                    {mediaContent.user?.first_name + ' ' + mediaContent.user?.last_name }<span style={{ color: '#808080', fontSize: '15px'}}>{ ' ' + mediaContent.user?.introduction }</span>
                     </Typography>
                   <Typography sx={{ fontFamily: 'Lato', fontSize: 12, fontWeight: 'bold', color:'#335985'}}>
                     {formatDate(mediaContent.createdAt)}
@@ -266,7 +266,7 @@ function MediaContentItem({mediaContent, redirect}) {
                             <Avatar src={comment.user?.profile_picture} alt="Kvatar" style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}}/>
                               <Box ml={2}>
                                 <Typography variant="subtitle1">
-                                {comment.user && comment.user.first_name + ' ' + comment.user.last_name}
+                                {comment.user && comment.user?.first_name + ' ' + comment.user?.last_name}
                                   </Typography>
                                 <Typography sx={{ fontFamily: 'Lato', fontSize: 10, fontWeight: 'bold', color:'#335985'}}>
                                   {formatDate(comment.date_time)}

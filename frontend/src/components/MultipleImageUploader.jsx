@@ -8,21 +8,21 @@ const MultipleImageUploader = ({ onImageUpload }) => {
     event.preventDefault();
     const files = event.dataTransfer.files;
     const images = Array.from(files).slice(0, 3); // Limit to 3 images
-
+  
     const readers = images.map((file) => {
-      const reader = new FileReader();
-
       return new Promise((resolve, reject) => {
+        const reader = new FileReader();
         reader.onload = (event) => resolve(event.target.result);
         reader.onerror = (error) => reject(error);
         reader.readAsDataURL(file);
       });
     });
-
+  
     Promise.all(readers)
       .then((results) => {
-        setImageData((imageData) => [...imageData, ...results]);
-        onImageUpload([...imageData, ...results]);
+        const newImageData = [...imageData, ...results]; // Combine existing and new images
+        setImageData(newImageData.slice(0, 3)); // Limit total images to 3
+        onImageUpload(newImageData.slice(0, 3));
       })
       .catch((error) => {
         console.log('Error reading files:', error);

@@ -3,6 +3,45 @@ const asyncHandler = require('express-async-handler')
 const MediaContent = require('../models/mediaContentModel')
 const User = require('../models/userModel')
 
+//@desc     Get Media Content By User ID
+//@route    Get /api/mediaContents/:id
+//@access   Private
+const getMediaContentByUserID = asyncHandler(async (req, res) => {
+   
+    const updatedMediaContents = [];
+    const mediaContents = await MediaContent.find();
+
+    const user_id = String(req.params.id);
+    console.log('user_id ' + user_id)
+    for (const content of mediaContents) {
+        console.log('content.user ' + String(content.user))
+        if (user_id === String(content.user)) {
+            const updatedComments = await Promise.all(
+                content.comments.map(async (comment) => {
+                  const commentUser = await User.findById(comment.user_id);
+                  return {
+                    comment: comment.comment,
+                    date_time: comment.date_time,
+                    user: commentUser,
+                  };
+                })
+              );
+    
+            const user = await User.findById(content.user);
+            const updatedContent = {
+                ...content.toObject(),
+                user: user,
+                comments: updatedComments,
+            };
+            updatedMediaContents.push(updatedContent);
+        }
+    }
+   
+    res.status(200).json(updatedMediaContents);
+
+})
+
+
 //@desc     Get Media Content
 //@route    GET /api/mediaContents
 //@access   Private
@@ -240,5 +279,5 @@ const deleteMediaContent = asyncHandler(async  (req, res) => {
 })
 
 module.exports = {
-    getMediaContents, createMediaContent, updateMediaContent, deleteMediaContent, updateMediaContentComment, updateMediaContentVote
+    getMediaContentByUserID, getMediaContents, createMediaContent, updateMediaContent, deleteMediaContent, updateMediaContentComment, updateMediaContentVote
 }

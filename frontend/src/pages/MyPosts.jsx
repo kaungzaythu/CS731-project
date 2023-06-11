@@ -4,14 +4,14 @@ import React from 'react';
   import { useSelector, useDispatch } from 'react-redux'
   import MediaContentItem from '../components/MediaContentItem'
   import Spinner from '../components/Spinner'
-  import { getMediaContents, reset } from '../features/mediaContents/mediaContentSlice'
+  import { getMediaContentByUserID, getMediaContents, reset } from '../features/mediaContents/mediaContentSlice'
   import Grid from '@mui/material/Grid';
   import Box from '@mui/material/Box';
   import LeftSection from '../components/LeftSection'
   import "../style.css";
 
 
-  function Home() {
+  function MyPosts() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -30,7 +30,7 @@ import React from 'react';
         navigate('/login')
       }
       else {
-        dispatch(getMediaContents())
+        dispatch(getMediaContentByUserID(user?._id))
       }
     
       return () => {
@@ -81,12 +81,12 @@ import React from 'react';
                   .map((mediaContent) => (
                     <React.Fragment key={mediaContent._id}>
 
-                    <MediaContentItem  mediaContent={mediaContent} redirect="/"/>
+                    <MediaContentItem  mediaContent={mediaContent} redirect="/my-posts"/>
                     </React.Fragment>
                   ))}
                 </div>
               ) : (
-                <h3>There is no post available from others.</h3>
+                <h3>You have not created any media contents.</h3>
               )}
             </section>
             </Grid>
@@ -99,4 +99,4 @@ import React from 'react';
     )
   }
 
-  export default Home
+  export default MyPosts

@@ -7,7 +7,7 @@ const MultipleImageUploader = ({ onImageUpload }) => {
   const handleDrop = (event) => {
     event.preventDefault();
     const files = event.dataTransfer.files;
-    const images = Array.from(files);
+    const images = Array.from(files).slice(0, 3); // Limit to 3 images
 
     const readers = images.map((file) => {
       const reader = new FileReader();
@@ -56,7 +56,7 @@ const MultipleImageUploader = ({ onImageUpload }) => {
         padding: '10px',
       }}
     >
-      <div style={{ marginBottom: '10px' }}>Drag and drop images here</div>
+      <div style={{ marginBottom: '10px' }}>Drag and drop up to 3 images here</div>
       <div
         style={{
           display: 'flex',

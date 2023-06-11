@@ -10,6 +10,7 @@ import LogOffIcon from '@mui/icons-material/PowerSettingsNew';
 import CreateAPost from '@mui/icons-material/NoteAdd';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HomeIcon from '@mui/icons-material/Home';
 
 function LeftSection() {
 
@@ -32,7 +33,11 @@ function LeftSection() {
     }
 
     const onMyProfile = () => {
-      navigate('/my-profile')
+      navigate('/my-posts')
+    }
+
+    const onHome = () => {
+      navigate('/')
     }
 
     return (
@@ -55,7 +60,28 @@ function LeftSection() {
             <span >{user && user.first_name + " " + user.last_name}</span>
           </Typography>
       </Box>
-      <Box pl={5} pt={5}>
+      <Box pl={5}  pt={5} >
+      <Button
+            variant="text"
+            onClick={onHome}
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#7A3385', 
+            '&:hover': {
+              backgroundColor: 'transparent', 
+            },
+          }}
+            
+          >
+            <HomeIcon style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}} />
+           
+            <Typography sx={{ fontFamily: 'lato', fontSize: 13, fontWeight: 'bold' }}>
+           
+            Home
+                                
+              
+            </Typography>
+          </Button>
+      </Box>
+      <Box pl={5}>
       <Button
             variant="text"
             onClick={onCreateAPost}
@@ -92,14 +118,14 @@ function LeftSection() {
            
             <Typography sx={{ fontFamily: 'lato', fontSize: 13, fontWeight: 'bold' }}>
            
-            My Profile
+            My Posts
                                 
               
             </Typography>
           </Button>
       </Box>
 
-      <Box pl={5} >
+      {/* <Box pl={5} >
       <Button
             variant="text"
             onClick={onSetting}
@@ -119,7 +145,7 @@ function LeftSection() {
               
             </Typography>
           </Button>
-      </Box>
+      </Box> */}
 
         <Box pl={5} position="absolute" bottom="50px">
           <Button

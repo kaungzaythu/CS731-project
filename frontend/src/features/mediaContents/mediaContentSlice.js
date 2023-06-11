@@ -47,6 +47,25 @@ export const getMediaContents = createAsyncThunk(
   }
 )
 
+// Get user media content by ID
+export const getMediaContentByUserID = createAsyncThunk(
+  'mediaContents/',
+  async (user_id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      return await mediaContentService.getMediaContentByUserID(user_id, token)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const updateVoteDB = createAsyncThunk(
   'mediaContents/updateVote',
   async (voteData, thunkAPI) => {
@@ -209,6 +228,19 @@ export const mediaContentSlice = createSlice({
         state.mediaContents = action.payload
       })
       .addCase(getMediaContents.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(getMediaContentByUserID.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getMediaContentByUserID.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.mediaContents = action.payload
+      })
+      .addCase(getMediaContentByUserID.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload

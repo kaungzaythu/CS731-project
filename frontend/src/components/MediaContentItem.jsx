@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import {Link, useNavigate } from 'react-router-dom'
-import {getMediaContents, reset,updateCommentDB, updateComment} from '../features/mediaContents/mediaContentSlice'
+import {getMediaContents, reset,updateCommentDB, updateComment, deleteMediaContent} from '../features/mediaContents/mediaContentSlice'
 import { Grid, Box, IconButton, Avatar } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -13,7 +13,7 @@ import UpvoteIconNeutral from "./UpvoteIconNeutral"
 import { Dialog, Divider, DialogContent, DialogActions, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
-function MediaContentItem({mediaContent}) {
+function MediaContentItem({mediaContent, redirect}) {
 
   const sortedComments = [...mediaContent.comments].sort((a, b) => new Date(b.date_time) - new Date(a.date_time));
   // mediaContent.comments.sort((a, b) => new Date(b.date_time) - new Date(a.date_time));
@@ -147,6 +147,22 @@ function MediaContentItem({mediaContent}) {
       }
     }
 
+    const deletePostButton = () => {
+      
+      var containsId = mediaContent.user?._id === user?._id;
+      if (containsId) {
+        return (
+          <IconButton size="big" style={{ color: '#7A3385'}}  onClick={deletePostAction}>
+              <ClearIcon />
+          </IconButton>
+        )
+      }
+    }
+
+    const deletePostAction = () => {
+      dispatch(deleteMediaContent(mediaContent._id))
+    }
+
   return (
     <>
     <Grid >
@@ -165,10 +181,10 @@ function MediaContentItem({mediaContent}) {
           <Box display="flex" flexDirection="column" p={2}>
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <Box display="flex" alignItems="center">
-                <Avatar src="/path/to/avatar.jpg" alt="Kvatar" style={{ color: '#7A3385'}}/>
+                <Avatar src={mediaContent.user.profile_picture} alt="Kvatar" style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}}/>
                 <Box ml={2}>
                   <Typography variant="subtitle1">
-                    {mediaContent.user.first_name + ' ' + mediaContent.user.last_name}
+                    {mediaContent.user.first_name + ' ' + mediaContent.user.last_name }<span style={{ color: '#808080', fontSize: '15px'}}>{ ' ' + mediaContent.user.introduction }</span>
                     </Typography>
                   <Typography sx={{ fontFamily: 'Lato', fontSize: 12, fontWeight: 'bold', color:'#335985'}}>
                     {formatDate(mediaContent.createdAt)}
@@ -177,9 +193,10 @@ function MediaContentItem({mediaContent}) {
               </Box>
               <Box display="flex" alignItems="left">
                 
-                <IconButton size="big" style={{ color: '#7A3385'}}>
+                {/* <IconButton size="big" style={{ color: '#7A3385'}}>
                   <ClearIcon />
-                </IconButton>
+                </IconButton> */}
+                {deletePostButton()}
               </Box>
             </Box>
             <Box mt={2}>
@@ -200,7 +217,7 @@ function MediaContentItem({mediaContent}) {
               
                 {downVoteButton()}
                 <Typography
-                  to="/"
+                  to={{redirect}}
                   component={Link}
                   sx={{
                     fontFamily: 'lato',
@@ -246,7 +263,7 @@ function MediaContentItem({mediaContent}) {
                         <Box display="flex" flexDirection="column" p={1}>
                           <Box display="flex" alignItems="center" justifyContent="space-between">
                             <Box display="flex" alignItems="center">
-                              <Avatar  style={{ color: '#7A3385'}}/>
+                            <Avatar src={comment.user?.profile_picture} alt="Kvatar" style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}}/>
                               <Box ml={2}>
                                 <Typography variant="subtitle1">
                                 {comment.user && comment.user.first_name + ' ' + comment.user.last_name}

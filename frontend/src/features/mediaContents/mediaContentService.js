@@ -53,6 +53,19 @@ const getMediaContents = async (token) => {
   return response.data
 }
 
+// Get user media content by id
+const getMediaContentByUserID = async (user_id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+  
+  const response = await axios.get(API_URL + user_id, config)
+
+  return response.data
+}
+
 // Delete user media content
 const deleteMediaContent = async (mediaContentId, token) => {
   const config = {
@@ -69,6 +82,7 @@ const deleteMediaContent = async (mediaContentId, token) => {
 const mediaContentService = {
   createMediaContent,
   getMediaContents,
+  getMediaContentByUserID,
   deleteMediaContent,
   updateVote,
   updateComment

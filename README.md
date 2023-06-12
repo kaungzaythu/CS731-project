@@ -37,11 +37,31 @@ N/A
 
 ## Screenshots
 
+**Account Creation**
 Here is a user interface for users to create an account.
 ![App Screenshot](https://kaung-zay.web.app/CS731-Project/Screenshots/Registration.png)
 
+**Login and Logout**
 Here is a user interface for users to login into FriendLoop Social Media Platform
 ![App Screenshot](https://kaung-zay.web.app/CS731-Project/Screenshots/Login.png)
+
+**Post a Media Content**
+Here is the user interface for posting a media content page.
+In the screenshot, Mary uses two images and a text to create a media post
+![App Screenshot](https://kaung-zay.web.app/CS731-Project/Screenshots/postamediacontent.png)
+
+**Display Posts**
+Here is the user interface to see the created post. In the screenshot, you can see the Mary's post.
+![App Screenshot](https://kaung-zay.web.app/CS731-Project/Screenshots/displaypost.png)
+
+
+**Enable up-voting and down-voting** 
+As you can see in the following screenshot: Mary down vote the Kaung Zay Thu's post and upvote the Denial Kaung Post
+![App Screenshot](https://kaung-zay.web.app/CS731-Project/Screenshots/updownvote.png)
+
+**Allow comments to be made on the posts**
+As you can see in the following screenshot: There are three persons comment on Denial Kaung' post.
+![App Screenshot](https://kaung-zay.web.app/CS731-Project/Screenshots/comment.png)
 
 ## 🚀 About Us
 We are a group of individuals who enjoy traveling, technology, and creating apps with delightful animations.

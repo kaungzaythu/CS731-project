@@ -34,11 +34,12 @@ const MultipleImageUploader = ({ onImageUpload }) => {
   };
 
   const handleRemoveImage = (index) => {
-    setImageData((imageData) => {
-      const updatedImageData = [...imageData];
-      updatedImageData.splice(index, 1);
-      return updatedImageData;
-    });
+    const updatedImageData = [...imageData];
+    updatedImageData.splice(index, 1);
+    setImageData(updatedImageData);
+  
+    const updatedMediaImages = [...updatedImageData];
+    onImageUpload(updatedMediaImages);
   };
 
   return (

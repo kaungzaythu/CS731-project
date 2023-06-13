@@ -65,7 +65,8 @@ function PostMedia() {
       const mediaContentData = {
         user: user_id,
         content_description,
-        ...(media_images && { image: media_images })
+        image: media_images
+        // ...(media_images && { image: media_images })
       }
 
       await dispatch(createMediaContent(mediaContentData))
@@ -136,7 +137,8 @@ function PostMedia() {
                     onImageUpload={(base64Array) =>
                       setFormData((prevState) => ({
                         ...prevState,
-                        media_images: [...prevState.media_images, ...base64Array],
+                        media_images: base64Array.slice(0, 3),
+
                       }))
                     }
                   />

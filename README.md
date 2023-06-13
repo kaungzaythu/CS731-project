@@ -1,5 +1,17 @@
 # CS 731 Project Group 4
 
+
+For Project Demo, You can either create a new account or use the following:
+Email - denial.ng@gmail.com
+PW - 123
+
+Email - mary.may@gmail.com
+PW - 123
+
+We removed node_modules folders in both ~/friendloop and ~/friendloop/frontend to reduce the size of the project. You can regenerate them by running npm install on both folder.
+
+===========================================================================
+
 The name of this Social Media Platform is called FriendLoop.
 
 This is a MERN (MongoDB, Express.js, React.js, Node.js) program for developing a social media platform. The goal of this project is to create a web-based application that allows users to create accounts, post media content, interact with posts through up-voting and down-voting, and make comments.

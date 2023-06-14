@@ -80,7 +80,7 @@ import React from 'react';
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) 
                   .map((mediaContent) => (
                     <React.Fragment key={mediaContent._id}>
-
+                      
                     <MediaContentItem  mediaContent={mediaContent} redirect="/my-posts"/>
                     </React.Fragment>
                   ))}

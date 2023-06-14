@@ -37,7 +37,7 @@ function Register() {
     }
 
     if (isSuccess || user) {
-      navigate('/')
+      navigate('/login')
     }
 
     dispatch(authReset())

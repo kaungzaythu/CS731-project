@@ -328,7 +328,7 @@ import DownvoteIcon from "./DownvoteIcon";
 import UpvoteIcon from "./UpvoteIcon";
 import DownvoteIconNeutral from "./DownvoteIconNeutral"
 import UpvoteIconNeutral from "./UpvoteIconNeutral"
-import { Dialog, Divider, DialogContent, DialogActions, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
+import { Dialog, Divider, DialogContent, DialogActions, Button, List, ListItem, ListItemText, TextField, DialogTitle, DialogContentText } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
 function MediaContentItem({mediaContent, redirect}) {
@@ -466,14 +466,43 @@ function MediaContentItem({mediaContent, redirect}) {
       }
     }
 
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () =>  {
+      setOpen(true);
+    }
+
+    const handleClose = () => {
+      setOpen(false);
+    }
+
+
     const deletePostButton = () => {
       
       var containsId = mediaContent.user?._id === user?._id;
       if (containsId) {
         return (
-          <IconButton size="big" style={{ color: '#7A3385'}}  onClick={deletePostAction}>
+          <>
+          <IconButton size="big" style={{ color: '#7A3385'}}  onClick={handleClickOpen}>
               <ClearIcon />
           </IconButton>
+          <Dialog open={open} onClose={handleClose}>
+            <DialogTitle id="alert-dialog-title">
+              {"Delete Post"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                  Are you sure want to delete this post ?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="success">Cancel</Button>
+              <Button onClick={deletePostAction} color="error" autoFocus>
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+          </>
         )
       }
     }

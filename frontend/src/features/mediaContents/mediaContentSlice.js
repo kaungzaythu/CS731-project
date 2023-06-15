@@ -47,6 +47,25 @@ export const getMediaContents = createAsyncThunk(
   }
 )
 
+// Get user media contents
+export const getMediaContentsSilent = createAsyncThunk(
+  'mediaContents/getAll',
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      return await mediaContentService.getMediaContents(token)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 // Get user media content by ID
 export const getMediaContentByUserID = createAsyncThunk(
   'mediaContents/',

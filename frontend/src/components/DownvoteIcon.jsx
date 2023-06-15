@@ -12,7 +12,7 @@ const DownvoteIcon  = ({ voterId, mediaContentId }) => {
           mediaContentId: mediaContentId
       }
       
-      dispatch(updateVote(voteData))
+      // dispatch(updateVote(voteData))
       dispatch(updateVoteDB(voteData))
   };
 

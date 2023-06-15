@@ -77,7 +77,7 @@ const UpvoteIcon  = ({ voterId, mediaContentId }) => {
           vote_action: 'up_vote',
           mediaContentId: mediaContentId
       }
-      dispatch(updateVote(voteData))
+      // dispatch(updateVote(voteData))
       dispatch(updateVoteDB(voteData))
     };
 

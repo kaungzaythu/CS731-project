@@ -10,7 +10,7 @@ const DownvoteIconNeutral = ({ voterId, mediaContentId }) => {
         vote_action: 'down_vote',
         mediaContentId: mediaContentId
     }
-    dispatch(updateVote(voteData))
+    // dispatch(updateVote(voteData))
     dispatch(updateVoteDB(voteData))
     };
 

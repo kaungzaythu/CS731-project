@@ -1,16 +1,17 @@
 import React from 'react';
-  import { useEffect } from 'react'
+  import { useEffect, useState } from 'react'
   import { useNavigate } from 'react-router-dom'
   import { useSelector, useDispatch } from 'react-redux'
   import MediaContentItem from '../components/MediaContentItem'
   import Spinner from '../components/Spinner'
-  import { getMediaContents, reset } from '../features/mediaContents/mediaContentSlice'
+  import { getMediaContents, getMediaContentsSilent, reset } from '../features/mediaContents/mediaContentSlice'
   import Grid from '@mui/material/Grid';
   import Box from '@mui/material/Box';
   import LeftSection from '../components/LeftSection'
   import "../style.css";
+  import io from 'socket.io-client'; 
 
-
+  
   function Home() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -19,24 +20,59 @@ import React from 'react';
     const { mediaContents, isLoading, isError, message } = useSelector(
       (state) => state.mediaContents
     )
+    const [updatedMediaContents, setUpdatedMediaContents] = useState([]);
 
     useEffect(() => {
-      
+      const socket = io();
+  
       if (isError) {
-        console.log(message)
+        console.log(message);
       }
-
+  
       if (!user) {
-        navigate('/login')
+        navigate('/login');
+      } else {
+        dispatch(getMediaContents());
       }
-      else {
-        dispatch(getMediaContents())
-      }
-    
+  
       return () => {
-        dispatch(reset())
-      }
-    }, [user, navigate, isError, message, dispatch])
+        dispatch(reset());
+        socket.disconnect();
+      };
+    }, [user, navigate, isError, message, dispatch]);
+
+    useEffect(() => {
+      const socket = io();
+  
+      socket.on('changeEvent', (change) => {
+        setUpdatedMediaContents((prevContents) => {
+          return prevContents.map((content) => {
+            if (content._id === change.documentKey._id) {
+              // return { ...content, ...change.updateDescription.updatedFields };
+              const updatedContent = { ...content, ...change.updateDescription.updatedFields };
+
+              // Update comments if they exist in the update
+              if (change.updateDescription.updatedFields.comments) {
+                updatedContent.comments = change.updateDescription.updatedFields.comments;
+              }
+              console.log('updatedContent: ' + updatedContent)
+              return updatedContent;
+            } else {
+              return content;
+            }
+          });
+        });
+      });
+  
+      return () => {
+        socket.disconnect();
+      };
+    }, []);
+  
+    useEffect(() => {
+      setUpdatedMediaContents(mediaContents);
+    }, [mediaContents]);
+  
 
     if (isLoading) {
       return <Spinner />
@@ -73,9 +109,9 @@ import React from 'react';
           <Grid item xs={6}>
             <Box pt={4}></Box>
             <section>
-              {mediaContents.length > 0 ? (
+              {updatedMediaContents.length > 0 ? (
                 <div>
-                  {mediaContents
+                  {updatedMediaContents
                   .slice() // Sort put the lastest on the top
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) 
                   .map((mediaContent) => (

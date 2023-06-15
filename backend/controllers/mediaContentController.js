@@ -278,6 +278,21 @@ const deleteMediaContent = asyncHandler(async  (req, res) => {
     res.status(200).json({id: req.params.id})
 })
 
+//@desc     Fetch Particular Media Content
+//@route    GET /api/mediaContents/fetchData/:id
+//@access   Private
+const fetchMediaContentByID = asyncHandler(async (req, res) => {
+    const mediaContent = await MediaContent.findById(req.params.id)
+
+    if (!mediaContent) {
+        res.status(400)
+        throw new Error('Media Content not found')
+    }
+
+    res.status(200).json(mediaContent);
+})
+
 module.exports = {
-    getMediaContentByUserID, getMediaContents, createMediaContent, updateMediaContent, deleteMediaContent, updateMediaContentComment, updateMediaContentVote
+    getMediaContentByUserID, getMediaContents, createMediaContent, updateMediaContent, deleteMediaContent, updateMediaContentComment, updateMediaContentVote,
+    fetchMediaContentByID
 }

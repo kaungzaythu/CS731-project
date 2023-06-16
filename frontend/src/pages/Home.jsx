@@ -4,7 +4,7 @@ import React from 'react';
   import { useSelector, useDispatch } from 'react-redux'
   import MediaContentItem from '../components/MediaContentItem'
   import Spinner from '../components/Spinner'
-  import { getMediaContents, getMediaContentsSilent, reset } from '../features/mediaContents/mediaContentSlice'
+  import { getCommentUser, getMediaContents, getMediaContentsSilent, reset } from '../features/mediaContents/mediaContentSlice'
   import Grid from '@mui/material/Grid';
   import Box from '@mui/material/Box';
   import LeftSection from '../components/LeftSection'
@@ -44,36 +44,79 @@ import React from 'react';
     useEffect(() => {
       const socket = io();
   
+      // socket.on('changeEvent', (change) => {
+      //   setUpdatedMediaContents((prevContents) => {
+      //     return prevContents.map((content) => {
+      //       if (content._id === change.documentKey._id) {
+      //         // return { ...content, ...change.updateDescription.updatedFields };
+      //         const updatedContent = { ...content, ...change.updateDescription.updatedFields };
+
+      //         // // Update comments if they exist in the update
+      //         // if (change.updateDescription.updatedFields.comments) {
+      //         //   updatedContent.comments = change.updateDescription.updatedFields.comments;
+      //         // }
+
+      //         // Update comments if they exist in the update
+
+      //         console.log(JSON.stringify(change.updateDescription.updatedFields));
+      //         const updatedFields = change.updateDescription.updatedFields;
+      //         if (updatedFields && Array.isArray(updatedContent.comments)) {
+      //           const updatedComments = [...updatedContent.comments];
+              
+      //             for (const key in updatedFields) {
+      //             if (key.startsWith('comments.')) {
+      //               const commentIndex = parseInt(key.split('.')[1]);
+      //               updatedComments[commentIndex] = updatedFields[key];
+      //             }
+      //           }
+              
+      //           updatedContent.comments = updatedComments;
+      //         }
+
+      //         console.log('updatedContent: ' + updatedContent)
+      //         return updatedContent;
+      //       } else {
+      //         return content;
+      //       }
+      //     });
+      //   });
+      // });
+
       socket.on('changeEvent', (change) => {
         setUpdatedMediaContents((prevContents) => {
           return prevContents.map((content) => {
             if (content._id === change.documentKey._id) {
-              // return { ...content, ...change.updateDescription.updatedFields };
               const updatedContent = { ...content, ...change.updateDescription.updatedFields };
-
-              // // Update comments if they exist in the update
-              // if (change.updateDescription.updatedFields.comments) {
-              //   updatedContent.comments = change.updateDescription.updatedFields.comments;
-              // }
-
+      
               // Update comments if they exist in the update
-
-              console.log(JSON.stringify(change.updateDescription.updatedFields));
               const updatedFields = change.updateDescription.updatedFields;
               if (updatedFields && Array.isArray(updatedContent.comments)) {
                 const updatedComments = [...updatedContent.comments];
-              
+      
                 for (const key in updatedFields) {
                   if (key.startsWith('comments.')) {
                     const commentIndex = parseInt(key.split('.')[1]);
-                    updatedComments[commentIndex] = updatedFields[key];
+                    const commentData = updatedFields[key];
+                    const user_id = commentData.user_id;
+      
+                    // Fetch the user object and add it to the commentData
+                    dispatch(getCommentUser(user_id)).then((user) => {
+                      updatedComments[commentIndex] = { ...commentData, user: user.payload };
+                      // Update the state with the modified comments array
+                      setUpdatedMediaContents((prevContents) => {
+                        return prevContents.map((content) => {
+                          if (content._id === change.documentKey._id) {
+                            return { ...content, comments: updatedComments };
+                          } else {
+                            return content;
+                          }
+                        });
+                      });
+                    });
                   }
                 }
-              
-                updatedContent.comments = updatedComments;
               }
-
-              console.log('updatedContent: ' + updatedContent)
+      
               return updatedContent;
             } else {
               return content;

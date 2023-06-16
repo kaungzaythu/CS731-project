@@ -87,7 +87,7 @@ const getCommentUser = async (userId, token) => {
     },
   }
 
-  const response = await axios.delete(API_URL + 'fetchCommentUser/' + userId, config)
+  const response = await axios.get(API_URL + 'fetchCommentUser/' + userId, config)
 
   return response.data
 }

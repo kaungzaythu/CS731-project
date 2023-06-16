@@ -40,7 +40,7 @@ function MediaContentItem({mediaContent, redirect}) {
       mediaContentId: mediaContent._id,
    }
      
-     dispatch(updateComment(Comment))//state
+    //  dispatch(updateComment(Comment))//state
      dispatch(updateCommentDB(CommentDB))
      setNewComment(''); 
     };
@@ -104,19 +104,25 @@ function MediaContentItem({mediaContent, redirect}) {
     };
 
     const voteCount = () => {
-      var upvote = mediaContent.up_vote.length
-      var downvote = mediaContent.down_vote.length
+      // var upvote = mediaContent.up_vote.length
+      var upvote = (mediaContent.up_vote || []).length;
+
+      // var downvote = mediaContent.down_vote.length
+      var downvote = (mediaContent.down_vote || []).length;
       return upvote - downvote;
     };
 
     const commentCount = () => {
-      const totalSize = mediaContent.comments.length;
+      // const totalSize = mediaContent.comments.length;
+      const totalSize = (mediaContent.comments || []).length;
       const comment = totalSize === 0 ? 'COMMENT' : totalSize === 1 ? `COMMENT (${totalSize})` : `COMMENTS (${totalSize})`;
       return comment;
     };
 
     const downVoteButton = () => {
-      var containsId = mediaContent.down_vote.some(item => item.user_id === user?._id);
+      var containsId = (mediaContent.down_vote || []).some(item => item.user_id === user?._id);
+
+      // var containsId = mediaContent.down_vote.some(item => item.user_id === user?._id);
       if (containsId) {
         return (
           <DownvoteIcon
@@ -136,7 +142,9 @@ function MediaContentItem({mediaContent, redirect}) {
     }
 
     const upVoteButton = () => {
-      var containsId = mediaContent.up_vote.some(item => item.user_id === user?._id);
+      var containsId = (mediaContent.up_vote || []).some(item => item.user_id === user?._id);
+
+      // var containsId = mediaContent.up_vote.some(item => item.user_id === user?._id);
       if (containsId) {
         return (
           <UpvoteIcon

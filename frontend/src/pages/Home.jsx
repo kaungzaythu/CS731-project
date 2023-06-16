@@ -51,10 +51,28 @@ import React from 'react';
               // return { ...content, ...change.updateDescription.updatedFields };
               const updatedContent = { ...content, ...change.updateDescription.updatedFields };
 
+              // // Update comments if they exist in the update
+              // if (change.updateDescription.updatedFields.comments) {
+              //   updatedContent.comments = change.updateDescription.updatedFields.comments;
+              // }
+
               // Update comments if they exist in the update
-              if (change.updateDescription.updatedFields.comments) {
-                updatedContent.comments = change.updateDescription.updatedFields.comments;
+
+              console.log(JSON.stringify(change.updateDescription.updatedFields));
+              const updatedFields = change.updateDescription.updatedFields;
+              if (updatedFields && Array.isArray(updatedContent.comments)) {
+                const updatedComments = [...updatedContent.comments];
+              
+                for (const key in updatedFields) {
+                  if (key.startsWith('comments.')) {
+                    const commentIndex = parseInt(key.split('.')[1]);
+                    updatedComments[commentIndex] = updatedFields[key];
+                  }
+                }
+              
+                updatedContent.comments = updatedComments;
               }
+
               console.log('updatedContent: ' + updatedContent)
               return updatedContent;
             } else {

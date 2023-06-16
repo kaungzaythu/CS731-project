@@ -15,7 +15,7 @@ import SendIcon from '@mui/icons-material/Send';
 
 function MediaContentItem({mediaContent, redirect}) {
 
-  const sortedComments = [...mediaContent.comments].sort((a, b) => new Date(b.date_time) - new Date(a.date_time));
+  // const sortedComments = [...mediaContent.comments].sort((a, b) => new Date(b.date_time) - new Date(a.date_time));
   // mediaContent.comments.sort((a, b) => new Date(b.date_time) - new Date(a.date_time));
 
     const { user } = useSelector((state) => state.auth);
@@ -23,7 +23,7 @@ function MediaContentItem({mediaContent, redirect}) {
     const [showComments, setShowComments] = useState(false);
     const [newComment, setNewComment] = useState('');
     const [comments, setComments] = useState(mediaContent.comments); // Track the list of comments
-
+    const [sortedComments, setSortedComments] = useState([]);
     
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -47,6 +47,10 @@ function MediaContentItem({mediaContent, redirect}) {
   
     useEffect(() => {
       setComments(mediaContent.comments);
+      const sortedComments = [...mediaContent.comments].sort(
+        (a, b) => new Date(b.date_time) - new Date(a.date_time)
+      );
+      setSortedComments(sortedComments);
     }, [mediaContent.comments]);
     
     const formatDate = (dateString) => {

@@ -35,9 +35,9 @@ client.connect().then(() => {
     // Listen for changes
     changeStream.on('change', (change) => {
     //   console.log('Change event:', change);
-      // Update your object or perform any necessary actions here
-      // You can emit the change to the connected clients using io.emit() if needed
+
       io.emit('changeEvent', change);
+      
     });
   }).catch(console.error);
 

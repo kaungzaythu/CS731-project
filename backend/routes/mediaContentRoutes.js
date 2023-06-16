@@ -11,6 +11,7 @@ const {
     updateMediaContentVote,
     getMediaContentByUserID,
     fetchMediaContentByID,
+    fetchMediaContentCommentUserByID
 } = require('../controllers/mediaContentController')
 
 const {protect} = require('../middleware/authMiddleware') 
@@ -24,5 +25,7 @@ router.route('/updateComment/:id').put(updateMediaContentComment)
 router.route('/updateVote/:id').put(updateMediaContentVote)
 
 router.route('/fetchData/:id').get(fetchMediaContentByID)
+
+router.route('/fetchCommentUser/:id').get(fetchMediaContentCommentUserByID)
 
 module.exports = router

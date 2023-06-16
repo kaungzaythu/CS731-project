@@ -140,6 +140,25 @@ export const deleteMediaContent = createAsyncThunk(
   }
 )
 
+// Get comment user data
+export const getCommentUser = createAsyncThunk(
+  'mediaContents/fetchCommentUser',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token
+      return await mediaContentService.getCommentUser(id, token)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
 export const mediaContentSlice = createSlice({
   name: 'mediaContent',
   initialState,

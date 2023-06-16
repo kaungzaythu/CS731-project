@@ -14,7 +14,7 @@ const getMediaContentByUserID = asyncHandler(async (req, res) => {
     const user_id = String(req.params.id);
     console.log('user_id ' + user_id)
     for (const content of mediaContents) {
-        console.log('content.user ' + String(content.user))
+        // console.log('content.user ' + String(content.user))
         if (user_id === String(content.user)) {
             const updatedComments = await Promise.all(
                 content.comments.map(async (comment) => {
@@ -49,11 +49,7 @@ const getMediaContents = asyncHandler(async (req, res) => {
 
     const mediaContents = await MediaContent.find();
     const updatedMediaContents = [];
-
-    
-
     for (const content of mediaContents) {
-
         const updatedComments = await Promise.all(
             content.comments.map(async (comment) => {
               const commentUser = await User.findById(comment.user_id);
@@ -292,7 +288,22 @@ const fetchMediaContentByID = asyncHandler(async (req, res) => {
     res.status(200).json(mediaContent);
 })
 
+//@desc     Fetch Particular Comment User 
+//@route    GET /api/mediaContents/fetchCommentUser/:id
+//@access   Private
+const fetchMediaContentCommentUserByID = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+
+    if (!user) {
+        res.status(400)
+        throw new Error('Commment User not found')
+    }
+
+    res.status(200).json(user);
+})
+
+
 module.exports = {
     getMediaContentByUserID, getMediaContents, createMediaContent, updateMediaContent, deleteMediaContent, updateMediaContentComment, updateMediaContentVote,
-    fetchMediaContentByID
+    fetchMediaContentByID, fetchMediaContentCommentUserByID
 }

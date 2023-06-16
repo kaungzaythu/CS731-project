@@ -79,13 +79,27 @@ const deleteMediaContent = async (mediaContentId, token) => {
   return response.data
 }
 
+// Get comment user
+const getCommentUser = async (userId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const response = await axios.delete(API_URL + 'fetchCommentUser/' + userId, config)
+
+  return response.data
+}
+
 const mediaContentService = {
   createMediaContent,
   getMediaContents,
   getMediaContentByUserID,
   deleteMediaContent,
   updateVote,
-  updateComment
+  updateComment,
+  getCommentUser
 }
 
 export default mediaContentService

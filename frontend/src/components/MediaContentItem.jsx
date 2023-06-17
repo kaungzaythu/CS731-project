@@ -76,11 +76,17 @@ function MediaContentItem({mediaContent, redirect}) {
       }
     
       if (images.length === 1) {
-        return (
-          <div style={{ height: '200px' }}>
-            <img src={images[0]}  style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          </div>
-        );
+        if (images[0] == '') {
+          return null;
+        }
+        else {
+          return (
+            <div style={{ height: '200px' }}>
+              <img src={images[0]}  style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+          );
+        }
+        
       } else if (images.length === 2) {
         return (
           <div style={{ height: '200px', display: 'flex' }}>

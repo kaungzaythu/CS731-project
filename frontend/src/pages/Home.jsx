@@ -10,7 +10,7 @@ import React from 'react';
   import LeftSection from '../components/LeftSection'
   import "../style.css";
   import io from 'socket.io-client'; 
-
+  import PostMedia from '../pages/PostMedia';
   
   function Home() {
     const navigate = useNavigate()
@@ -44,61 +44,36 @@ import React from 'react';
     useEffect(() => {
       const socket = io();
   
-      // socket.on('changeEvent', (change) => {
-      //   setUpdatedMediaContents((prevContents) => {
-      //     return prevContents.map((content) => {
-      //       if (content._id === change.documentKey._id) {
-      //         // return { ...content, ...change.updateDescription.updatedFields };
-      //         const updatedContent = { ...content, ...change.updateDescription.updatedFields };
-
-      //         // // Update comments if they exist in the update
-      //         // if (change.updateDescription.updatedFields.comments) {
-      //         //   updatedContent.comments = change.updateDescription.updatedFields.comments;
-      //         // }
-
-      //         // Update comments if they exist in the update
-
-      //         console.log(JSON.stringify(change.updateDescription.updatedFields));
-      //         const updatedFields = change.updateDescription.updatedFields;
-      //         if (updatedFields && Array.isArray(updatedContent.comments)) {
-      //           const updatedComments = [...updatedContent.comments];
-              
-      //             for (const key in updatedFields) {
-      //             if (key.startsWith('comments.')) {
-      //               const commentIndex = parseInt(key.split('.')[1]);
-      //               updatedComments[commentIndex] = updatedFields[key];
-      //             }
-      //           }
-              
-      //           updatedContent.comments = updatedComments;
-      //         }
-
-      //         console.log('updatedContent: ' + updatedContent)
-      //         return updatedContent;
-      //       } else {
-      //         return content;
-      //       }
-      //     });
-      //   });
-      // });
 
       socket.on('changeEvent', (change) => {
         setUpdatedMediaContents((prevContents) => {
           return prevContents.map((content) => {
-            if (content._id === change.documentKey._id) {
-              const updatedContent = { ...content, ...change.updateDescription.updatedFields };
-      
-              // Update comments if they exist in the update
-              const updatedFields = change.updateDescription.updatedFields;
+            if (content._id === change.documentKey._id ) {
+              // const updatedContent = { ...content, ...change.updateDescription.updatedFields };
+              // const updatedFields = change.updateDescription.updatedFields;
+              const updatedFields = change.updateDescription && change.updateDescription.updatedFields;
+              const updatedContent = { ...content, ...(updatedFields && change.updateDescription.updatedFields) };
+              
               if (updatedFields && Array.isArray(updatedContent.comments)) {
                 const updatedComments = [...updatedContent.comments];
       
                 for (const key in updatedFields) {
+                  var user_id = ''
+                  var commentIndex = 0
+                  var commentData
                   if (key.startsWith('comments.')) {
-                    const commentIndex = parseInt(key.split('.')[1]);
-                    const commentData = updatedFields[key];
-                    const user_id = commentData.user_id;
-      
+                    commentIndex = parseInt(key.split('.')[1]);
+                    commentData = updatedFields[key];
+                    user_id = commentData.user_id;
+                  }
+                  
+                  if (user_id == '' && updatedFields.comments !== undefined) {
+                    // first comment
+                    user_id = updatedFields.comments[0].user_id
+                    commentData = updatedFields.comments[0]
+                  }
+                  
+                  if (user_id !== '') {
                     // Fetch the user object and add it to the commentData
                     dispatch(getCommentUser(user_id)).then((user) => {
                       updatedComments[commentIndex] = { ...commentData, user: user.payload };
@@ -114,6 +89,7 @@ import React from 'react';
                       });
                     });
                   }
+                  
                 }
               }
       
@@ -144,31 +120,20 @@ import React from 'react';
           {/* First Column */}
           <Grid item xs={3} height="100vh" style={{ position: 'sticky', top: 0 }}>
             <LeftSection/>
-            {/* <Box pl={5} pt={3}>
-              <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 35}} >
-                  <span style={{ color: '#7A3385' }}>Friend</span><span style={{ color: '#335985' }}>Loop</span>
-                </Typography>
-                <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 11}}>
-                  <span style={{ color: '#7A3385' }}>Express Yourself, Connect with Others.</span>
-                </Typography>
-            </Box>
-
-            <Box pl={5} pt={10}>
-              <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 25}} >
-                  <span style={{ color: '#335985' }}>Welcome</span>
-                </Typography>
-                <Typography sx={{fontFamily:'lato', fontSize: 20, fontWeight: 'bold'}}>
-                  <span >{user && user.first_name + " " + user.last_name}</span>
-                </Typography>
-            </Box>
-
-            <Box pl={5} position="absolute" bottom="50px">
-              <GradientButton  onClick={onLogout} text="LOGOUT" />
-            </Box> */}
+           
           </Grid>
           {/* Second Column */}
           <Grid item xs={6}>
-            <Box pt={4}></Box>
+          <Box pt={4}>
+          
+            </Box>
+            <Box pt={4}>
+            <PostMedia />
+            </Box>
+
+            <Box pt={4}>
+          
+            </Box>
             <section>
               {updatedMediaContents.length > 0 ? (
                 <div>

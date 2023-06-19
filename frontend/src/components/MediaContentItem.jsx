@@ -82,7 +82,7 @@ function MediaContentItem({mediaContent, redirect}) {
         else {
           return (
             <div style={{ height: '200px' }}>
-              <img src={images[0]}  style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+               <img src={images[0]}  style={{ width: '100%', height: '100%', objectFit: 'cover' }}  />
             </div>
           );
         }

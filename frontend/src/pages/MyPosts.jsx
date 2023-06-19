@@ -1,14 +1,15 @@
 import React from 'react';
-  import { useEffect } from 'react'
+  import { useEffect, useState } from 'react'
   import { useNavigate } from 'react-router-dom'
   import { useSelector, useDispatch } from 'react-redux'
   import MediaContentItem from '../components/MediaContentItem'
   import Spinner from '../components/Spinner'
-  import { getMediaContentByUserID, getMediaContents, reset } from '../features/mediaContents/mediaContentSlice'
+  import { getMediaContentByUserID, getCommentUser, reset } from '../features/mediaContents/mediaContentSlice'
   import Grid from '@mui/material/Grid';
   import Box from '@mui/material/Box';
   import LeftSection from '../components/LeftSection'
   import "../style.css";
+  import io from 'socket.io-client'; 
 
 
   function MyPosts() {
@@ -19,6 +20,8 @@ import React from 'react';
     const { mediaContents, isLoading, isError, message } = useSelector(
       (state) => state.mediaContents
     )
+
+    const [updatedMediaContents, setUpdatedMediaContents] = useState([]);
 
     useEffect(() => {
       
@@ -37,6 +40,77 @@ import React from 'react';
         dispatch(reset())
       }
     }, [user, navigate, isError, message, dispatch])
+
+
+    useEffect(() => {
+      const socket = io();
+  
+
+      socket.on('changeEvent', (change) => {
+        setUpdatedMediaContents((prevContents) => {
+          return prevContents.map((content) => {
+            if (content._id === change.documentKey._id ) {
+              // const updatedContent = { ...content, ...change.updateDescription.updatedFields };
+              // const updatedFields = change.updateDescription.updatedFields;
+              const updatedFields = change.updateDescription && change.updateDescription.updatedFields;
+              const updatedContent = { ...content, ...(updatedFields && change.updateDescription.updatedFields) };
+              
+              if (updatedFields && Array.isArray(updatedContent.comments)) {
+                const updatedComments = [...updatedContent.comments];
+      
+                for (const key in updatedFields) {
+                  var user_id = ''
+                  var commentIndex = 0
+                  var commentData
+                  if (key.startsWith('comments.')) {
+                    commentIndex = parseInt(key.split('.')[1]);
+                    commentData = updatedFields[key];
+                    user_id = commentData.user_id;
+                  }
+                  
+                  if (user_id == '' && updatedFields.comments !== undefined) {
+                    // first comment
+                    user_id = updatedFields.comments[0].user_id
+                    commentData = updatedFields.comments[0]
+                  }
+                  
+                  if (user_id !== '') {
+                    // Fetch the user object and add it to the commentData
+                    dispatch(getCommentUser(user_id)).then((user) => {
+                      updatedComments[commentIndex] = { ...commentData, user: user.payload };
+                      // Update the state with the modified comments array
+                      setUpdatedMediaContents((prevContents) => {
+                        return prevContents.map((content) => {
+                          if (content._id === change.documentKey._id) {
+                            return { ...content, comments: updatedComments };
+                          } else {
+                            return content;
+                          }
+                        });
+                      });
+                    });
+                  }
+                  
+                }
+              }
+      
+              return updatedContent;
+            } else {
+              return content;
+            }
+          });
+        });
+      });
+  
+      return () => {
+        socket.disconnect();
+      };
+    }, []);
+  
+    useEffect(() => {
+      setUpdatedMediaContents(mediaContents);
+    }, [mediaContents]);
+  
 
     if (isLoading) {
       return <Spinner />
@@ -73,9 +147,9 @@ import React from 'react';
           <Grid item xs={6}>
             <Box pt={4}></Box>
             <section>
-              {mediaContents.length > 0 ? (
+              {updatedMediaContents.length > 0 ? (
                 <div>
-                  {mediaContents
+                  {updatedMediaContents
                   .slice() // Sort put the lastest on the top
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) 
                   .map((mediaContent) => (

@@ -11,6 +11,8 @@ import CreateAPost from '@mui/icons-material/NoteAdd';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HomeIcon from '@mui/icons-material/Home';
+import { Avatar } from '@mui/material';
+import AnimatedButton from './AnimatedButton';
 
 function LeftSection() {
 
@@ -52,14 +54,43 @@ function LeftSection() {
             <span style={{ color: '#7A3385' }}>Express Yourself, Connect with Others.</span>
           </Typography>
       </Box>
-      <Box pl={7} pt={10}>
+      
+
+      {/* <Box pl={6} pt={10} flex>
         <Typography sx={{fontFamily:'Libre Caslon Text', fontSize: 25}} >
             <span style={{ color: '#335985' }}>Welcome</span>
           </Typography>
-          <Typography sx={{fontFamily:'lato', fontSize: 20, fontWeight: 'bold'}}>
+          <br>
+          </br>
+          <Box style={{backgroundColor: 'black', alignContents: 'center'}}>
+          <Avatar src={user?.profile_picture} alt="Kvatar" style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}}/> 
+
+          </Box>
+          
+          <Typography style={{backgroundColor: 'black'}} sx={{fontFamily:'lato', fontSize: 20, fontWeight: 'bold'}}>
             <span >{user && user.first_name + " " + user.last_name}</span>
           </Typography>
+      </Box> */}
+      
+      <Box pl={6} pt={10} display="flex" alignItems="center">
+        <Typography sx={{ fontFamily: 'Libre Caslon Text', fontSize: 25 }}>
+          <span style={{ color: '#335985' }}>Welcome</span>
+        </Typography>
+        <br />
+        
       </Box>
+      <br>
+      </br>
+<Box pl={6} display="flex">
+      <Box>
+      <Avatar src={user?.profile_picture} alt="Kvatar" style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}}/>
+
+      </Box>
+  <Typography pt={0.5} ml={2} sx={{ fontFamily: 'lato', fontSize: 20, fontWeight: 'bold',textAlignVertical: 'center',}}>
+    <span>{user && user.first_name + ' ' + user.last_name}</span>
+  </Typography>
+</Box>
+
       <Box pl={5}  pt={5} >
       <Button
             variant="text"
@@ -81,27 +112,7 @@ function LeftSection() {
             </Typography>
           </Button>
       </Box>
-      <Box pl={5}>
-      <Button
-            variant="text"
-            onClick={onCreateAPost}
-            style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#7A3385', 
-            '&:hover': {
-              backgroundColor: 'transparent', 
-            },
-          }}
-            
-          >
-            <CreateAPost style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}} />
-           
-            <Typography sx={{ fontFamily: 'lato', fontSize: 13, fontWeight: 'bold' }}>
-           
-            Create a Post
-                                
-              
-            </Typography>
-          </Button>
-      </Box>
+     
 
       <Box pl={5} >
       <Button
@@ -139,10 +150,7 @@ function LeftSection() {
             <SettingsIcon style={{ boxShadow: '0px 3px 6px rgba(0, 0, 0, 0.16)',  borderRadius: '50%', padding: '7'}} />
            
             <Typography sx={{ fontFamily: 'lato', fontSize: 13, fontWeight: 'bold' }}>
-           
             Setting
-                                
-              
             </Typography>
           </Button>
       </Box> */}
@@ -165,6 +173,7 @@ function LeftSection() {
             </Typography>
           </Button>
         </Box>
+
         </>
         
       )

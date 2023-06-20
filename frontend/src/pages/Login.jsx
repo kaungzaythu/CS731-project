@@ -20,16 +20,28 @@ function Login() {
 
     const { email , password} = formData
 
+    const [notes, setNotes] = useState(email);
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-  
+
     const { user, isLoading, isError, isSuccess, message } = useSelector(
       (state) => state.auth
     )
   
 // execute when the page is loaded
   useEffect(() => {
+
+    const userEmail = JSON.parse(localStorage.getItem('userEmail'))
+
+
+    if (userEmail) {
+      setFormData((prevState) => ({
+        ...prevState,
+        email: userEmail
+      }))
+    }
+
     if (isError) {
       toast.error(message)
     }
@@ -43,7 +55,7 @@ function Login() {
 
 
     const onChange = (e) => {
-
+        setNotes(e.target.value);
         setFormData((prevState) => ({
             ...prevState, 
             [e.target.name]: e.target.value,

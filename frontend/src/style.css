@@ -150,7 +150,7 @@
   filter: blur(3px);
   width: calc(100% + 3px);
   height: calc(100% + 3px);
-  animation: glowing 15s linear infinite alternate;
+  animation: glowing 5s linear infinite alternate;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
   border-radius: 5px;

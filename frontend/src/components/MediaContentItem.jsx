@@ -12,6 +12,8 @@ import DownvoteIconNeutral from "./DownvoteIconNeutral"
 import UpvoteIconNeutral from "./UpvoteIconNeutral"
 import { Dialog, Divider, DialogContent, DialogActions, Button, List, ListItem, ListItemText, TextField, DialogTitle, DialogContentText } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
 
 function MediaContentItem({mediaContent, redirect}) {
 
@@ -68,6 +70,7 @@ function MediaContentItem({mediaContent, redirect}) {
       return `${formattedDate}`;
     };
 
+
     const renderImages = () => {
       const images = mediaContent.image;
     
@@ -76,33 +79,106 @@ function MediaContentItem({mediaContent, redirect}) {
       }
     
       if (images.length === 1) {
-        if (images[0] == '') {
+        if (images[0] === '') {
           return null;
-        }
-        else {
+        } else {
           return (
             <div style={{ height: '200px' }}>
-               <img src={images[0]}  style={{ width: '100%', height: '100%', objectFit: 'cover' }}  />
+              <img src={images[0]} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           );
         }
-        
       } else if (images.length === 2) {
         return (
-          <div style={{ height: '200px', display: 'flex' }}>
-            <img src={images[0]}   style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
-            <img src={images[1]}   style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
-          </div>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <div style={{ position: 'relative', paddingTop: '100%', overflow: 'hidden' }}>
+                <img
+                  src={images[0]}
+                  alt={`Image 0`}
+                  style={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <div style={{ position: 'relative', paddingTop: '100%', overflow: 'hidden' }}>
+                <img
+                  src={images[1]}
+                  alt={`Image 1`}
+                  style={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </div>
+            </Grid>
+          </Grid>
         );
       } else if (images.length === 3) {
         return (
-          <div style={{ height: '200px', display: 'flex' }}>
-            <img src={images[0]}  style={{ width: '50%', height: '100%', objectFit: 'cover' }} />
-            <div style={{ display: 'flex', flexDirection: 'column', width: '50%' }}>
-              <img src={images[1]}  style={{ width: '100%', height: '50%', objectFit: 'cover', marginBottom: '1rem' }} />
-              <img src={images[2]}  style={{ width: '100%', height: '50%', objectFit: 'cover' }} />
-            </div>
-          </div>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={8}>
+              <div style={{ position: 'relative', paddingTop: '100%', overflow: 'hidden' }}>
+                <img
+                  src={images[0]}
+                  alt={`Image 0`}
+                  style={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </div>
+            </Grid>
+            <Grid item xs={12} sm={4} container spacing={2}>
+              <Grid item xs={12}>
+                <div style={{ position: 'relative', paddingTop: '100%', overflow: 'hidden' }}>
+                  <img
+                    src={images[1]}
+                    alt={`Image 1`}
+                    style={{
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                <div style={{ position: 'relative', paddingTop: '100%', overflow: 'hidden' }}>
+                  <img
+                    src={images[2]}
+                    alt={`Image 2`}
+                    style={{
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                </div>
+              </Grid>
+            </Grid>
+          </Grid>
         );
       }
     
